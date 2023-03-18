@@ -1,0 +1,450 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>推荐系统简述 | JLChenBlog</title><meta name="author" content="陈加乐"><meta name="copyright" content="陈加乐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="推荐系统什么是推荐  推荐是一种思维方式  作为搜索的延申 作为广告的土壤 掌握信息传播主动权   适用场景 资源受限的信息过滤 导向性的信息展现 目的性的资源分配      解决问题 信息过载  挖掘长尾   长尾是指那些原来不受到重视的销量小但种类多的产品或服务由于总量巨大，累积起来的总收益超过主流产品的现象。在互联网领域，长尾效应尤为显著。长尾 术语也在统计学中被使用，通常应用在财产的分布和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="推荐系统简述">
+<meta property="og:url" content="https://jlchentop.gitee.io/posts/20230310224218-66919c32.html">
+<meta property="og:site_name" content="JLChenBlog">
+<meta property="og:description" content="推荐系统什么是推荐  推荐是一种思维方式  作为搜索的延申 作为广告的土壤 掌握信息传播主动权   适用场景 资源受限的信息过滤 导向性的信息展现 目的性的资源分配      解决问题 信息过载  挖掘长尾   长尾是指那些原来不受到重视的销量小但种类多的产品或服务由于总量巨大，累积起来的总收益超过主流产品的现象。在互联网领域，长尾效应尤为显著。长尾 术语也在统计学中被使用，通常应用在财产的分布和">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113133.png">
+<meta property="article:published_time" content="2023-03-10T14:42:18.000Z">
+<meta property="article:modified_time" content="2023-03-18T09:40:34.231Z">
+<meta property="article:author" content="陈加乐">
+<meta property="article:tag" content="推荐系统">
+<meta property="article:tag" content="算法概述">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113133.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://jlchentop.gitee.io/posts/20230310224218-66919c32.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":100,"languages":{"author":"作者: 陈加乐","link":"链接: ","source":"来源: JLChenBlog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '推荐系统简述',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-18 17:40:34'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313111525.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">1</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113133.png')"><nav id="nav"><span id="blog-info"><a href="/" title="JLChenBlog"><img class="site-icon" src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313111525.png"/><span class="site-name">JLChenBlog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">推荐系统简述</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-03-10T14:42:18.000Z" title="发表于 2023-03-10 22:42:18">2023-03-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-18T09:40:34.231Z" title="更新于 2023-03-18 17:40:34">2023-03-18</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="推荐系统简述"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/posts/20230310224218-66919c32.html#post-comment"><span id="twikoo-count"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="推荐系统"><a href="#推荐系统" class="headerlink" title="推荐系统"></a>推荐系统</h1><h2 id="什么是推荐"><a href="#什么是推荐" class="headerlink" title="什么是推荐"></a>什么是推荐</h2><blockquote>
+<ul>
+<li>推荐是一种思维方式</li>
+<li><ol>
+<li>作为搜索的延申</li>
+<li>作为广告的土壤</li>
+<li>掌握信息传播主动权</li>
+</ol>
+</li>
+<li>适用场景<ol>
+<li>资源受限的信息过滤</li>
+<li>导向性的信息展现</li>
+<li>目的性的资源分配</li>
+</ol>
+</li>
+<li></li>
+</ul>
+</blockquote>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><ol>
+<li><p>信息过载</p>
+</li>
+<li><p>挖掘长尾</p>
+<blockquote>
+<ul>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://baike.baidu.com/item/%E9%95%BF%E5%B0%BE/389156?fr=aladdin">长尾</a><br>是指那些原来不受到重视的销量小但种类多的产品或服务由于总量巨大，累积起来的总收益超过主流产品的现象。在互联网领域，长尾效应尤为显著。长尾 术语也在统计学中被使用，通常应用在财产的分布和词汇。</li>
+<li>帕雷托法则<br>向来被商业界视为铁律，其内涵认为企业界80%的业绩来自20%的产品</li>
+</ul>
+<p>数据、物品价值 </p>
+</blockquote>
+</li>
+<li><p>用户体验</p>
+<blockquote>
+<p>提升用户体验；帮助用户发现自己很难发现的兴趣点、商品……</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="推荐系统的技术演进"><a href="#推荐系统的技术演进" class="headerlink" title="推荐系统的技术演进"></a>推荐系统的技术演进</h2><blockquote>
+<ol>
+<li><p>早期论坛的打分系统；hacknews；reddit;</p>
+</li>
+<li><p>早期社交内容</p>
+</li>
+<li><p>早期电商内容</p>
+</li>
+<li><p>单一算法到多算法融合<br>基于内容的算法;(文本相关性, 主题相关性)<br>基于行为的算法 ;( 协同过滤的变种，随机游走等其他行为类算法  )<br>结果融合；人工规则</p>
+</li>
+<li><p>引入机器学习模型</p>
+<blockquote>
+<p>启发式，无明确目标<br>相对静态，反应慢<br>考虑维度较少，个性化程度不足<br>纯手工，改进空间小</p>
+</blockquote>
+<blockquote>
+<p>对齐明确目标，成熟的优化方法<br>时效性灵活，反映可快可慢特征维度丰富，个性化程度细腻<br>理论储备丰富，发展空间大</p>
+</blockquote>
+</li>
+<li><p>深度学习</p>
+<blockquote>
+<ul>
+<li>从浅层模型到深度模型</li>
+<li><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230310224419.png" alt="image-20230309200210231" style="zoom:50%;" /></li>
+</ul>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+<h2 id="推荐系统基本流程"><a href="#推荐系统基本流程" class="headerlink" title="推荐系统基本流程"></a>推荐系统基本流程</h2><ol>
+<li><h2 id="召回"><a href="#召回" class="headerlink" title="召回"></a>召回</h2><blockquote>
+<ul>
+<li>协同过滤</li>
+<li>内容相似召回</li>
+<li>热门召回</li>
+<li>……</li>
+</ul>
+</blockquote>
+</li>
+<li><h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><blockquote>
+<ul>
+<li>机器学习</li>
+<li>二分类算法</li>
+<li>深度学习算法</li>
+<li></li>
+</ul>
+</blockquote>
+</li>
+<li><h2 id="调整-重排"><a href="#调整-重排" class="headerlink" title="调整(重排)"></a>调整(重排)</h2><blockquote>
+<ul>
+<li>针对 具体场景</li>
+</ul>
+<hr>
+<ul>
+<li>去重</li>
+<li>过滤，热门补充</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<h3 id="召回-1"><a href="#召回-1" class="headerlink" title="召回"></a>召回</h3><ul>
+<li><p>一般召回路径</p>
+<blockquote>
+<ol>
+<li>i2i</li>
+<li>u2i</li>
+<li>u2i2i</li>
+<li>u2u2i</li>
+<li>u2tag2i<br>泛化性好</li>
+<li>u2***2i</li>
+</ol>
+</blockquote>
+</li>
+</ul>
+<p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230310224420.png" alt="image-20230309155810040"></p>
+<h3 id="排序-1"><a href="#排序-1" class="headerlink" title="排序"></a>排序</h3><h3 id="调整"><a href="#调整" class="headerlink" title="调整"></a>调整</h3><h2 id="通用推荐系统技术架构（数据流图）"><a href="#通用推荐系统技术架构（数据流图）" class="headerlink" title="通用推荐系统技术架构（数据流图）"></a>通用推荐系统技术架构（数据流图）</h2><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230310224422.png" alt="image-20230309161118965"></p>
+<h1 id="推荐系统的方法"><a href="#推荐系统的方法" class="headerlink" title="推荐系统的方法"></a>推荐系统的方法</h1><h2 id="Content-Based-基于内容的推荐系统"><a href="#Content-Based-基于内容的推荐系统" class="headerlink" title="Content-Based   ; 基于内容的推荐系统"></a>Content-Based   ; 基于内容的推荐系统</h2><ul>
+<li>最早被使用的推荐算法，效果良好</li>
+<li>给用户推荐之前喜欢的物品，相似的物品</li>
+<li>u2i2i<br>u2tag2i</li>
+</ul>
+<p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230310224421.png" alt="image-20230309165128805"></p>
+<h3 id="重点：相似度计算"><a href="#重点：相似度计算" class="headerlink" title="重点：相似度计算"></a>重点：相似度计算</h3><ol>
+<li>余弦相似度</li>
+<li></li>
+</ol>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li><p>优点</p>
+<blockquote>
+<ol>
+<li>不需要其他用户的数据</li>
+<li>能给具备独特口味的用户推荐</li>
+<li>可以推荐最新的、冷门的物品</li>
+<li>容易做推荐结果的解释</li>
+</ol>
+</blockquote>
+</li>
+<li><p>缺点</p>
+<blockquote>
+<ol>
+<li>很难找到能表达物品的“标签”，有时候需要人工打标签</li>
+<li>过于局限于自己的世界，无法挖掘出用户的潜在兴趣</li>
+<li>新用户如果没有行为，没法做推荐  (<em><strong>==冷启动问题==</strong></em>)</li>
+</ol>
+</blockquote>
+</li>
+</ul>
+<h2 id="Collaborative-Filtering-基于协同过滤的推荐系统"><a href="#Collaborative-Filtering-基于协同过滤的推荐系统" class="headerlink" title="Collaborative-Filtering  ; 基于协同过滤的推荐系统"></a>Collaborative-Filtering  ; 基于协同过滤的推荐系统</h2><ul>
+<li><p>大类，一般也分为两种</p>
+<blockquote>
+<ul>
+<li><blockquote>
+<ol>
+<li>Memory-based CF ; 基于数据统计（记忆）的协同过滤</li>
+<li>Model-based CF ; 基于模型（参数学习）的协同过滤</li>
+</ol>
+</blockquote>
+</li>
+<li><blockquote>
+<ul>
+<li>基于用户的协同过滤<br>u2u2i</li>
+<li>基于物品的协同过滤<br>u2i2i</li>
+</ul>
+<p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230310224419.png" alt="image-20230309175315079"></p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h3 id="example"><a href="#example" class="headerlink" title="example"></a>example</h3><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230310224422.png" alt="image-20230309171614207"></p>
+<hr>
+<p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230310224420.png" alt="image-20230309171709127"></p>
+<h2 id="CF-Content-based-混合推荐系统"><a href="#CF-Content-based-混合推荐系统" class="headerlink" title="CF+Content-based ;  混合推荐系统"></a>CF+Content-based ;  混合推荐系统</h2><h2 id="内容相似推荐"><a href="#内容相似推荐" class="headerlink" title="内容相似推荐"></a>内容相似推荐</h2><ul>
+<li><p>用于：计算物品最相似的其他物品列表，直接用户i2i相似推荐或者u2i2i推荐</p>
+</li>
+<li><p>基本结构</p>
+</li>
+</ul>
+<p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230310224420.png" alt="image-20230309175110738"></p>
+<h1 id="实战应用考虑方法"><a href="#实战应用考虑方法" class="headerlink" title="实战应用考虑方法"></a>实战应用考虑方法</h1><h2 id="多路召回融合排序"><a href="#多路召回融合排序" class="headerlink" title="多路召回融合排序"></a>多路召回融合排序</h2><blockquote>
+<ul>
+<li>一般会使 用多个召回策略，互相弥补不足，效果更好，三个臭皮匠顶个诸葛亮。</li>
+<li>每个策略之间毫不相关，一般可以编写并发多线程同时执行</li>
+<li>问题:怎样将多个召回列表融合成一个有序列表?</li>
+</ul>
+</blockquote>
+<p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230310224419.png" alt="image-20230309171938088"></p>
+<blockquote>
+<ul>
+<li><blockquote>
+<p>举例，几种召回策略返回的列表(Item-ID、权重)分别为:</p>
+<p>召回策略x:A0.9，B0.8,C0.7<br>召回策略Y:B0.6，C0.5，D0.4<br>召回策略Z∶C0.3，D0.2，E0.1</p>
+</blockquote>
+</li>
+<li><p>策略:效果依次变好，按照成本进行选择</p>
+</li>
+</ul>
+<p>1、按顺序展示:比如实时&gt;购买数据召回&gt;播放数据召回，则直接展示A、B、C、D、E</p>
+<p>2、平均法:分母为召回策略个数，分子为权重加和，C为(0.7+0.5+0.3)/3，B为(0.8+0.6)/3，</p>
+<p>3、加权平均:比如三种策略自己指定权重为0..4、0.3、0.2，则B的权重为(0.4<em>0.8+0.6</em>0.3+O*0.2)/(0.4+0.3+0.2)</p>
+<p>4、动态加权法:计算x/Y/z三种召回策略的CTR，作为每天更新的动态加权</p>
+<p>5、机器学习权重法:逻辑回归LR分类模型预先离线算好各种召回的权重，然后做加权召回</p>
+</blockquote>
+<h2 id="推荐系统-AB-Test"><a href="#推荐系统-AB-Test" class="headerlink" title="推荐系统  AB Test"></a>推荐系统  AB Test</h2><ul>
+<li><p>定义</p>
+<blockquote>
+<ol>
+<li>AB测试是一种向产品的不同受众展示同一内容的2个或多个变体，并比较哪个变体带来了更多转化的做法。</li>
+<li>AB测试是转化率优化过程的重要方法之一，使用它来收集定性和定量的用户见解，来了解潜在客户并根据该数据优化转化渠道。</li>
+</ol>
+</blockquote>
+</li>
+<li><p>必要性</p>
+<blockquote>
+<ol>
+<li>想要数据驱动，重点是做AB对比实验，然后模型策略、设计等不断的迭代更新;</li>
+<li>进行低风险的修改，先在小流量测试，如果没有问题再调大流量;</li>
+<li>实现数据统计上的重大改进，降低人工猜测、直觉决策的不确定性;</li>
+<li>怎样证明自己做的好?工程开发职位和算法职位的重大区分，后者更能用对比数据说话</li>
+</ol>
+</blockquote>
+</li>
+</ul>
+<h3 id="AB-Test基本架构"><a href="#AB-Test基本架构" class="headerlink" title="AB Test基本架构"></a>AB Test基本架构</h3><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230310224421.png" alt="image-20230309174152009"></p>
+<h3 id="ab测试中常见问题"><a href="#ab测试中常见问题" class="headerlink" title="ab测试中常见问题"></a>ab测试中常见问题</h3><blockquote>
+<ol>
+<li>不要同时运行太多测试:<br>要确定测试的优先级，一起测试太多的元素很难确定哪个元素对测试的成功或失败影响最大。</li>
+<li>实验的流量大小:<br>流量样本的数量过小，实验结论不能使人信服</li>
+<li>测试持续时间不能太短:<br>运行测试时间过短会导致测试失败或产生不重要的结果</li>
+<li>无法遵循迭代过程:<br>A/B测试是一个迭代过程，每个测试都基于先前测试的结果，不管当前成功或失败，都不要停止继续AB测试</li>
+</ol>
+</blockquote>
+<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><h2 id="1-Netflix经典推荐系统架构"><a href="#1-Netflix经典推荐系统架构" class="headerlink" title="1. Netflix经典推荐系统架构"></a>1. Netflix经典推荐系统架构</h2><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230310224421.png" alt="image-20230309160440223"></p>
+<p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230310224420.png" alt="image-20230309160850977"></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.bilibili.com/video/BV1Dz411B7wd?p=4&amp;spm_id_from=pageDriver&amp;vd_source=079f268ceb076dc167768a4865b01eaa">https://www.bilibili.com/video/BV1Dz411B7wd?p=4&amp;spm_id_from=pageDriver&amp;vd_source=079f268ceb076dc167768a4865b01eaa</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://jlchentop.gitee.io">陈加乐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://jlchentop.gitee.io/posts/20230310224218-66919c32.html">https://jlchentop.gitee.io/posts/20230310224218-66919c32.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://jlchentop.gitee.io" target="_blank">JLChenBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">算法概述</a></div><div class="post_share"><div class="social-share" data-image="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113133.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">推荐系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%8E%A8%E8%8D%90"><span class="toc-number">1.1.</span> <span class="toc-text">什么是推荐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">解决问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B"><span class="toc-number">1.3.</span> <span class="toc-text">推荐系统的技术演进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B"><span class="toc-number">1.4.</span> <span class="toc-text">推荐系统基本流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AC%E5%9B%9E"><span class="toc-number">1.5.</span> <span class="toc-text">召回</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F"><span class="toc-number">1.6.</span> <span class="toc-text">排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E6%95%B4-%E9%87%8D%E6%8E%92"><span class="toc-number">1.7.</span> <span class="toc-text">调整(重排)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AC%E5%9B%9E-1"><span class="toc-number">1.7.1.</span> <span class="toc-text">召回</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F-1"><span class="toc-number">1.7.2.</span> <span class="toc-text">排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E6%95%B4"><span class="toc-number">1.7.3.</span> <span class="toc-text">调整</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%EF%BC%88%E6%95%B0%E6%8D%AE%E6%B5%81%E5%9B%BE%EF%BC%89"><span class="toc-number">1.8.</span> <span class="toc-text">通用推荐系统技术架构（数据流图）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">推荐系统的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Content-Based-%E5%9F%BA%E4%BA%8E%E5%86%85%E5%AE%B9%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.1.</span> <span class="toc-text">Content-Based   ; 基于内容的推荐系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E7%82%B9%EF%BC%9A%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97"><span class="toc-number">2.1.1.</span> <span class="toc-text">重点：相似度计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">2.1.2.</span> <span class="toc-text">优缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Collaborative-Filtering-%E5%9F%BA%E4%BA%8E%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.2.</span> <span class="toc-text">Collaborative-Filtering  ; 基于协同过滤的推荐系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#example"><span class="toc-number">2.2.1.</span> <span class="toc-text">example</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CF-Content-based-%E6%B7%B7%E5%90%88%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.3.</span> <span class="toc-text">CF+Content-based ;  混合推荐系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E7%9B%B8%E4%BC%BC%E6%8E%A8%E8%8D%90"><span class="toc-number">2.4.</span> <span class="toc-text">内容相似推荐</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%E5%BA%94%E7%94%A8%E8%80%83%E8%99%91%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">实战应用考虑方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E8%B7%AF%E5%8F%AC%E5%9B%9E%E8%9E%8D%E5%90%88%E6%8E%92%E5%BA%8F"><span class="toc-number">3.1.</span> <span class="toc-text">多路召回融合排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F-AB-Test"><span class="toc-number">3.2.</span> <span class="toc-text">推荐系统  AB Test</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AB-Test%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84"><span class="toc-number">3.2.1.</span> <span class="toc-text">AB Test基本架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ab%E6%B5%8B%E8%AF%95%E4%B8%AD%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">3.2.2.</span> <span class="toc-text">ab测试中常见问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B"><span class="toc-number">4.</span> <span class="toc-text">案例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Netflix%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84"><span class="toc-number">4.1.</span> <span class="toc-text">1. Netflix经典推荐系统架构</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">5.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By 陈加乐</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener external nofollow noreferrer" href="https://jlchentop.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-zeabur-production-a4ec.up.railway.app',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-zeabur-production-a4ec.up.railway.app',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="true" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></body></html>
