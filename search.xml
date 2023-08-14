@@ -4,6 +4,39 @@
   
     
     <entry>
+      <title>Flask学习</title>
+      <link href="/posts/20230814175838-95d3c49f.html"/>
+      <url>/posts/20230814175838-95d3c49f.html</url>
+      
+        <content type="html"><![CDATA[<h1>什么是Flask</h1><h2 id="什么是Flask？">什么是Flask？</h2><p>Flask是一个用Python编写的Web应用程序框架。 它由 <strong>Armin Ronacher</strong> 开发，他领导一个名为Pocco的国际Python爱好者团队。 Flask基于Werkzeug WSGI工具包和Jinja2模板引擎。两者都是Pocco项目。</p><p>Flask诞生于2010年，是用Python语言基于Werkzeug工具箱编写的轻量级Web开发框架。</p><p>Flask本身相当于一个内核，其他几乎所有的功能都要用到扩展（邮件扩展Flask-Mail，用户认证Flask-Login），都需要用第三方的扩展来实现。</p><p>其 WSGI 工具箱采用 Werkzeug（路由模块），模板引擎则使用 Jinja2。这两个也是Flask框架的核心。</p><p>Python最出名的框架要数Django，此外还有Flask、Tornado等框架。虽然Flask不是最出名的框架，但是Flask应该算是最灵活的框架之一，这也是Flask受到广大开发者喜爱的原因。</p><h2 id="WSGI">WSGI</h2><p>Web Server Gateway Interface（Web服务器网关接口，WSGI）已被用作Python Web应用程序开发的标准。 WSGI是Web服务器和Web应用程序之间通用接口的规范。</p><h2 id="Werkzeug">Werkzeug</h2><p>它是一个WSGI工具包，它实现了请求，响应对象和实用函数。 这使得能够在其上构建web框架。 Flask框架使用Werkzeug作为其基础之一。</p><h2 id="jinja2">jinja2</h2><p>jinja2是Python的一个流行的模板引擎。Web模板系统将模板与特定数据源组合以呈现动态网页。</p><h1>Flask学习教程</h1><ul><li><a href="https://www.w3cschool.cn/flask/flask_overview.html#">Flask 概述_w3cschool</a></li></ul><h2 id="Flask程序例子">Flask程序例子</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello_world</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello World!&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure><p>把它保存为 <a href="http://hello.py">hello.py</a> （或是类似的），然后用 Python 解释器来运行。 确保你的应用文件名不是 <a href="http://flask.py">flask.py</a> ，因为这将与 Flask 本身冲突。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ python hello.py</span><br><span class="line"> * Running on http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">5000</span>/</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>现在访问 <a href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a> ，你会 看见 Hello World 问候。</p><h3 id="那么，这段代码做了什么？">那么，这段代码做了什么？</h3><p>首先，我们导入了 Flask 类。这个类的实例将会是我 们的 WSGI 应用程序。</p><p>接下来，我们创建一个该类的实例，第一个参数是应用模块或者包的名称。 如果你使用单一的模块（如本例），你应该使用 <strong>name</strong> ，因为模块 的名称将会因其作为单独应用启动还是作为模块导入而有不同（ 也即是 ‘<strong>main</strong>’ 或实际的导入名）。这是必须的，这样 Flask 才知道到哪去找模板、静态文件等等。详情见 Flask 的文档。</p><p>然后，我们使用 route() 装饰器告诉 Flask 什么样 的URL 能触发我们的函数。</p><p>这个函数的名字也在生成 URL 时被特定的函数采用，这个函数返回我们想 要显示在用户浏览器中的信息。</p><p>最后我们用 run() 函数来让应用运行在本地服务器上。 其中 if <strong>name</strong> == ‘<strong>main</strong>’: 确保服务器只会在该脚本被 Python 解释器直接执行的时候才会运行，而不是作为模块导入的时候。</p><p>欲关闭服务器，按 Ctrl+C。</p><h3 id="外部可访问的服务器">外部可访问的服务器</h3><p>如果你运行了这个服务器，你会发现它只能从你自己的计算机上访问，网络 中其它任何的地方都不能访问。在调试模式下，用户可以在你的计算机上执 行任意 Python 代码。因此，这个行为是默认的。</p><p>如果你禁用了 debug 或信任你所在网络的用户，你可以简单修改调用 run() 的方法使你的服务器公开可用，如下:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.run(host=&#x27;0.0.0.0&#x27;)</span><br></pre></td></tr></table></figure><p>这会让操作系统监听所有公网 IP。</p><h1>为什么要用Web框架</h1><h2 id="什么是Web-Framework？">什么是Web Framework？</h2><p>Web Application Framework（Web应用程序框架）或简单的Web Framework（Web框架）表示一个库和模块的集合，使Web应用程序开发人员能够编写应用程序，而不必担心协议，线程管理等低级细节。</p><h3 id="Web应用程序的本质">Web应用程序的本质</h3><p>Web(World Wide Web)诞生最初的目的，是为了利用互联网交流工作文档。</p><h3 id="使用WEB框架的优点">使用WEB框架的优点</h3><p>web网站发展至今，特别是<a href="https://cloud.tencent.com/product/cvm?from_column=20065&amp;from=20065">服务器</a>端，涉及到的知识、内容，非常广泛。这对程序员的要求会越来越高。如果采用成熟，稳健的框架，那么一些基础的工作，比如，安全性，数据流控制等都可以让框架来处理，那么程序开发人员可以把精力放在具体的业务逻辑上面。使用框架的优点： <strong>稳定性和可扩展性强</strong> <strong>可以降低开发难度，提高开发效率。</strong> 总结一句话：避免重复造轮子</p><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/08/20230814-221720.png" alt="20190315163458696"></p><p><a href="https://so.csdn.net/so/search?q=Django&amp;spm=1001.2101.3001.7020">Django</a>等框架只是为了解决路由分发。框架核心：实现路由和视图（业务逻辑处理）</p><h1>参考</h1><ol><li><a href="https://www.w3cschool.cn/flask/flask_overview.html#">Flask 概述_w3cschool</a></li><li><a href="https://cloud.tencent.com/developer/article/1860110">【一周掌握Flask框架学习笔记】Flask概念及基础-腾讯云开发者社区-腾讯云 (tencent.com)</a></li><li><a href="https://cloud.tencent.com/developer/article/1860110">https://cloud.tencent.com/developer/article/1860110</a></li><li></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 框架 </category>
+          
+          <category> Web框架 </category>
+          
+          <category> Python </category>
+          
+          <category> Flask </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Flask </tag>
+            
+            <tag> WEB框架 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Select下拉选择onchange事件</title>
       <link href="/posts/20230810233351-9e5ae3e6.html"/>
       <url>/posts/20230810233351-9e5ae3e6.html</url>
