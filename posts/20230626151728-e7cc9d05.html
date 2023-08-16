@@ -1,0 +1,408 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>LearningToRank-排序学习 | JLChenBlog</title><meta name="author" content="陈加乐"><meta name="copyright" content="陈加乐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="排序学习三种方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LearningToRank-排序学习">
+<meta property="og:url" content="https://jlchentop.github.io/posts/20230626151728-e7cc9d05.html">
+<meta property="og:site_name" content="JLChenBlog">
+<meta property="og:description" content="排序学习三种方式">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113133.png">
+<meta property="article:published_time" content="2023-06-26T07:17:28.000Z">
+<meta property="article:modified_time" content="2023-08-16T04:06:23.237Z">
+<meta property="article:author" content="陈加乐">
+<meta property="article:tag" content="思考，学习，">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113133.png"><link rel="shortcut icon" href="/img/moon_JLC.ico"><link rel="canonical" href="https://jlchentop.github.io/posts/20230626151728-e7cc9d05.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":100,"languages":{"author":"作者: 陈加乐","link":"链接: ","source":"来源: JLChenBlog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'LearningToRank-排序学习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-08-16 12:06:23'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313111525.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113133.png')"><nav id="nav"><span id="blog-info"><a href="/" title="JLChenBlog"><img class="site-icon" src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313111525.png"/><span class="site-name">JLChenBlog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">LearningToRank-排序学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-06-26T07:17:28.000Z" title="发表于 2023-06-26 15:17:28">2023-06-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-08-16T04:06:23.237Z" title="更新于 2023-08-16 12:06:23">2023-08-16</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="LearningToRank-排序学习"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/posts/20230626151728-e7cc9d05.html#post-comment"><span id="twikoo-count"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>传统排序方法</h1>
+<ol>
+<li><strong>传统的排序方法通过构造相关度函数，按照相关度进行排序</strong>。<br>
+很难融合多种因数，比如向量空间模型以tf*idf作为权重构建相关度函数，就很难利用其他信息了，</li>
+<li>并且如果模型中参数比较多，也会使得调参非常困难，而且很可能会出现过拟合现象。</li>
+</ol>
+<p>Ranking模型可以粗略分为基于相关度和机遇重要性进行排序。</p>
+<p>基于相关度的模型，通常利用query和doc之间的词共现特性（如布尔模型）、VSM（如TFIDF、LSI等）、概率排序思想（BM25、LMIR）等。</p>
+<p>基于重要性的模型，利用的是doc本身的重要性，如pageRank、TructRank等。</p>
+<h1>Learning To Rank</h1>
+<p>LTR（Learning to rank）是一种==监督学习==（SupervisedLearning）的==排序方法==，已经被广泛应用到推荐与搜索等领域。</p>
+<h2 id="LTR采用机器学习">LTR采用机器学习</h2>
+<p>很好地解决了这一问题。机器学习方法很容易融合多种特征，而且有成熟深厚的理论基础，并有一套成熟理论解决稀疏、过拟合等问题。</p>
+<p>排序学习方法分为PointWise、PairWise、ListWise三种不同的方式，参考《A Short Introduction to Learning to Rank》</p>
+<p>三种方法并不是特定的算法，而是排序学习模型的设计思路，主要区别体现在损失函数（Loss Function）、以及相应的标签标注方式和优化方法的不同。</p>
+<p>LTR中单文档方法是将训练集里每一个文档当做一个训练实例,文档对方法是将同一个查询的搜索结果里任意两个文档对作为一个训练实例,文档列方法是将一个查询里的所有搜索结果列表作为一个训练实例.</p>
+<ul>
+<li>
+<p>设q  为query，D(d_i,…… d_n) 为返回的文档对，如何排序</p>
+<blockquote>
+<ol>
+<li>Point-Wise:       <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false">(</mo><msub><mi>d</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>=</mo><msub><mi>Y</mi><mrow><mi>q</mi><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">F(d_i) = Y_{qi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>     根据相关度Y 对D排序</li>
+<li>Pair-Wise :      <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false">(</mo><mi>q</mi><mo separator="true">,</mo><mo stretchy="false">(</mo><msub><mi>d</mi><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>d</mi><mi>j</mi></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">F(q,(d_i,d_j))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">))</span></span></span></span>     ；  二分类，确定d_i,和d_j的顺序关系</li>
+<li>List-Wise:       <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false">(</mo><mi>q</mi><mo separator="true">,</mo><mi>D</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi>Y</mi><mi>D</mi></msub></mrow><annotation encoding="application/x-tex">F(q,D) = Y_{D}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>    ；(q,D)作为输入进行分类或者回归</li>
+</ol>
+</blockquote>
+</li>
+</ul>
+<p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/08/20230816-105350" alt="img"></p>
+<h1>PointWise 单点法</h1>
+<p>Pointwise方法是这三种排序学习方法中最简单点一种，它是思想是直接将排序问题转换成了分类或者回归问题</p>
+<p>假如已有排序学习的训练数据集，每个query对应了多个不同的多doc，并且每个doc与相应query的相关度已知道，那么Pointwise方法在训练时会把每个单独的doc本身看作X ，把与query的相关度看作Y ，然后利用分类或者回归模型进行训练，最后依据利用训练好的模型对不同doc的打分进行排序</p>
+<p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/08/20230816-104448.jpg" alt="p"></p>
+<blockquote>
+<p>0/1变量 时，为PosintWise二分类</p>
+<p>为离散变量时，为PointWise多分类</p>
+<p>为连续变量时，为PointWise回归</p>
+</blockquote>
+<h2 id="PointWise-方法存在的问题：">PointWise 方法存在的问题：</h2>
+<p>PointWise 方法通过优化损失函数求解最优的参数，可以看到 PointWise 方法非常简单，工程上也易实现，但是 PointWise 也存在很多问题：</p>
+<ol>
+<li>PointWise ==只考虑单个文档同 query 的相关性==，没有考虑文档间的关系，即假设各个doc之间是相互独立的，这种假设是不成立的。<br>
+然而排序追求的是排序结果，并不要求精确打分，只要有相对打分即可；</li>
+<li>通过分类只是把不同的文档做了一个简单的区分，同一个类别里的文档则无法深入区别，虽然我们可以根据预测的概率来区别，但实际上，==这个概率只是准确度概率，并不是真正的排序靠前的预测概率==；</li>
+<li>PointWise 方法并没有考虑同一个 query 对应的文档间的内部依赖性。
+<ul>
+<li>一方面，导致输入空间内的样本不是 IID 的，违反了 ML 的基本假设，</li>
+<li>另一方面，没有充分利用这种样本间的结构性。</li>
+<li>其次，当不同 query 对应不同数量的文档时，==整体 loss 将容易被对应文档数量大的 query 组所支配==，应该每组 query 都是等价的才合理。</li>
+</ul>
+</li>
+<li>很多时候，排序结果的 Top N 条的顺序重要性远比剩下全部顺序重要性要高，==因为损失函数没有相对排序位置信息，这样会使损失函数可能无意的过多强调那些不重要的 docs，==即那些排序在后面对用户体验影响小的 doc，所以对于位置靠前但是排序错误的文档应该加大惩罚。</li>
+</ol>
+<h2 id="数据输入和输出形式：">数据输入和输出形式：</h2>
+<p>Pointwise方法是通过近似为回归问题解决排序问题，</p>
+<ol>
+<li>
+<p>输入的单条样本为得分-文档，将每个查询-文档对的相关性得分作为实数分数或者序数分数，使得单个查询-文档对作为样本点(Pointwise的由来)，训练排序模型。</p>
+</li>
+<li>
+<p>预测时候对于指定输入，给出查询-文档对的相关性得分。</p>
+</li>
+</ol>
+<ul>
+<li>代表算法：</li>
+</ul>
+<p>基于神经网络的排序算法 RankProp、基于感知机的在线排序算法 Prank(Perception Rank)/OAP-BPM 和基于 SVM 的排序算法。</p>
+<p>推荐中使用较多的 Pointwise 方法是 LR、GBDT、SVM、FM 以及结合 DNN 的各种排序算法。</p>
+<h1>PairWise 配对法</h1>
+<p>配对法的基本思路是对样本进行两两比较，构建偏序文档对，从比较中学习排序，因为对于一个查询关键字来说，最重要的其实不是针对某一个文档的相关性是否估计得准确，而是要能够正确估计一组文档之间的 “相对关系”。</p>
+<p>PairWise方法的思想是将同一个query下多个不同doc之间进行两两组对，然后将&lt;doc, doc&gt;pair doc作为模型输入进行一个二分类的任务学习。PairWise首先将doc进行两两组对，然后比较doc与query的相关度大小，如果第一个doc的相关度大于第二个doc，则这对doc的标签设置为1否则为0。常用模型包括有RankNet、LambdaRank、LambdaMart等。</p>
+<p>因此，Pairwise 的训练集样本从每一个 “关键字文档对” 变成了 “关键字文档文档配对”。也就是说，每一个数据样本其实是一个比较关系，当前一个文档比后一个文档相关排序更靠前的话，就是正例，否则便是负例，如下图。试想，有三个文档：A、B 和 C。完美的排序是 “B&gt;C&gt;A”。我们希望通过学习两两关系 “B&gt;C”、“B&gt;A” 和 “C&gt;A” 来重构 “B&gt;C&gt;A”。</p>
+<img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/08/20230816-104719.jpg" alt="v2-3f03a6e52527d5992482cc3e3f075650_r" style="zoom: 50%;" />
+<p>这里面有几个非常关键的假设。换句话说，标注是一个困难的事情，难点在于：是否存能得到完美关系？是否能重构完美排序？</p>
+<h2 id="Pairwise-方法存在的问题：">Pairwise 方法存在的问题：</h2>
+<p>Pairwise 方法通过考虑两两文档之间的相关对顺序来进行排序，相比 PointWise 方法有明显改善。但 Pairwise 方法仍有如下问题：</p>
+<ol>
+<li>使用的==是两文档之间相关度的损失函数，而它和真正衡量排序效果的指标之间存在很大不同==，甚至可能是负相关的，如可能出现 Pairwise Loss 越来越低，但 NDCG 分数也越来越低的现象。</li>
+<li>==只考虑了两个文档的先后顺序，且没有考虑文档在搜索列表中出现的位置==，导致最终排序效果并不理想。</li>
+<li>==不同的查询，其相关文档数量差异很大==，转换为文档对之后，有的查询可能有几百对文档，有的可能只有几十个，这样不加均一化地在一起学习，模型会优先考虑文档对数量多的查询，减少这些查询的 loss，最终对机器学习的效果评价造成困难。</li>
+<li>Pairwise 方法的训练样例是偏序文档对，它将对文档的排序转化为对不同文档与查询相关性大小关系的预测；因此，如果因某个文档相关性被预测错误，或文档对的两个文档相关性均被预测错误，则会影响与之关联的其它文档，进而引起连锁反应并影响最终排序结果。</li>
+</ol>
+<h2 id="数据输入和输出形式：-2">数据输入和输出形式：</h2>
+<p>Pairwise方法是通过近似为分类问题解决排序问题，输入的单条样本为标签-文档对。</p>
+<ol>
+<li>对于一次查询的多个结果文档，组合任意两个文档形成文档对作为输入样本。即学习一个二分类器，对输入的一对文档对AB（Pairwise的由来），根据A相关性是否比B好，二分类器给出分类标签1或0。</li>
+<li>对所有文档对进行分类，就可以得到一组偏序关系，从而构造文档全集的排序关系。</li>
+<li>该类方法的原理是对给定的文档全集S，降低排序中的逆序文档对的个数来降低排序错误，从而达到优化排序结果的目的。</li>
+</ol>
+<ul>
+<li><strong>代表算法：</strong></li>
+</ul>
+<p>基于 SVM 的 Ranking SVM 算法、基于神经网络的 RankNet 算法和基于 Boosting 的 RankBoost 算法。</p>
+<h1>ListWise 列表法</h1>
+<p><em><strong>相对于尝试学习每一个样本是否相关或者两个文档的相对比较关系，列表法排序学习的基本思路是尝试直接优化像 NDCG（Normalized Discounted Cumulative Gain）这样的指标，从而能够学习到最佳排序结果。</strong></em></p>
+<blockquote>
+<p>列表法的相关研究有很大一部分来自于微软研究院，这其中著名的作者就有微软亚州院的徐君、李航、刘铁岩等人，以及来自微软西雅图的研究院的著名<strong>排序算法 LambdaMART</strong> 以及 Bing 搜索引擎的主导人克里斯托弗·博格斯（Christopher J.C. Burges）。</p>
+</blockquote>
+<p>列表法排序学习有两种基本思路。</p>
+<ol>
+<li>第一种称为 Measure-specific，就是直接针对 NDCG 这样的指标进行优化。<br>
+目的简单明了，用什么做衡量标准，就优化什么目标。</li>
+<li>第二种称为 Non-measure specific，则是根据一个已经知道的最优排序，尝试重建这个顺序，然后来衡量这中间的差异。</li>
+</ol>
+<h2 id="Measure-specific">Measure-specific</h2>
+<p>先来看看<em><strong>直接优化排序指标</strong></em>的难点和核心在什么地方。</p>
+<ul>
+<li>难点在于，希望能够优化 NDCG 指标这样的 “理想” 很美好，但是现实却很残酷。<br>
+NDCG、MAP 以及 AUC 这类排序标准，都是在数学的形式上的 “非连续”（Non-Continuous）和 “非可微分”（Non-Differentiable）。<br>
+而绝大多数的优化算法都是基于 “连续”（Continuous）和 “可微分”（Differentiable）函数的。因此，直接优化难度比较大。</li>
+</ul>
+<p>三种思路</p>
+<ul>
+<li>
+<p>第一种方法是，既然直接优化有难度，那就找一个近似 NDCG 的另外一种指标。而这种替代的指标是 “连续” 和 “可微分” 的 。只要我们建立这个替代指标和 NDCG 之间的近似关系，那么就能够通过优化这个替代指标达到逼近优化 NDCG 的目的。这类的代表性算法的有 SoftRank 和 AppRank。</p>
+</li>
+<li>
+<p>第二种方法是，尝试从数学的形式上写出一个 NDCG 等指标的 “边界”（Bound），然后优化这个边界。比如，如果推导出一个上界，那就可以通过最小化这个上界来优化 NDCG。这类的代表性算法有 SVM-MAP 和 SVM-NDCG。</p>
+</li>
+<li>
+<p>第三种方法则是，希望从优化算法上下手，看是否能够设计出复杂的优化算法来达到优化 NDCG 等指标的目的。对于这类算法来说，算法要求的目标函数可以是 “非连续” 和 “非可微分” 的。这类的代表性算法有 AdaRank 和 RankGP</p>
+</li>
+</ul>
+<h2 id="Non-measure-specific">Non-measure specific</h2>
+<p>这种思路的主要假设是，已经知道了针对某个搜索关键字的完美排序，那么怎么通过学习算法来逼近这个完美排序。我们希望缩小预测排序和完美排序之间的差距。值得注意的是，在这种思路的讨论中，优化 NDCG 等排序的指标并不是主要目的。这里面的代表有 ListNet 和 ListMLE。</p>
+<ul>
+<li>
+<p>Listwise 方法存在的问题：</p>
+<blockquote>
+<p>列表法相较单点法和配对法针对排序问题的模型设计更加自然，解决了排序应该基于 query 和 position 问题。</p>
+<p>但列表法也存在一些问题：一些算法需要基于排列来计算 loss，从而使得训练复杂度较高，如 ListNet 和 BoltzRank。此外，位置信息并没有在 loss 中得到充分利用，可以考虑在 ListNet 和 ListMLE 的 loss 中引入位置折扣因子</p>
+</blockquote>
+</li>
+<li>
+<p>基于列的学习排序(Listwise Approach)是将qid=10对应的所有查询文档作为一个实例进行训练,即一个查询及其对应的所有搜索结果评分作为一个实例进行训练;训练得到一个最后评分函数F后,test测试集中一个新的查询,函数F对每一个文档进行打分,之后按照得分顺序由高到低排序即是对应搜索的结果.</p>
+</li>
+</ul>
+<p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/08/20230816-104826.jpg" alt="v2-0bc0cd36af20a0d781b49755368332ca_r"></p>
+<ul>
+<li>代表算法：</li>
+</ul>
+<p>基于 Measure-specific 的 SoftRank、SVM-MAP、SoftRank、LambdaRank、LambdaMART，基于 Non-measure specific 的 ListNet、ListMLE、BoltzRank。</p>
+<p>推荐中使用较多的 Listwise 方法是 LambdaMART。</p>
+<h1>评价</h1>
+<p>ListWise方法相比于pariwise和pointwise往往更加直接，它专注于自己的目标和任务，直接对文档排序结果进行优化，因此往往效果也是最好的。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Point wise</th>
+<th>pairwise</th>
+<th>list wise</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>思想</td>
+<td>Pointwise排序是将训练集中的每个item看作一个样本获取rank函数，主要解决方法是把分类问题转换为单个item的分类或回归问题。</td>
+<td>Pairwise排序是将同一个查询中两个不同的item作为一个样本，主要思想是把rank问题转换为二值分类问题</td>
+<td>Listwise排序是将整个item序列看作一个样本，通过直接优化信息检索的评价方法和定义损失函数两种方法实现。</td>
+</tr>
+<tr>
+<td>算法</td>
+<td>1、基于回归的算法；<br />2、基于分类的算法；<br />3、基于有序回归的算法</td>
+<td>基于二分类的算法</td>
+<td>直接基于评价指标的算法<br />非直接基于评价指标的算法</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>ranking 追求的是排序结果，并不要求精确打分，只要有相对打分即可。<br />pointwise 类方法并没有考虑同一个 query 对应的 docs 间的内部依赖性。一方面，导致输入空间内的样本不是 IID 的，违反了 ML 的基本假设，另一方面，没有充分利用这种样本间的结构性。<br />其次，当不同 query 对应不同数量的 docs 时，整体 loss 将会被对应 docs 数量大的 query 组所支配，前面说过应该每组 query 都是等价的。损失函数也没有 model 到预测排序中的位置信息。因此，损失函数可能无意的过多强调那些不重要的 docs，即那些排序在后面对用户体验影响小的 doc。</td>
+<td>1、如果人工标注包含多有序类别，那么转化成 pairwise preference 时必定会损失掉一些更细粒度的相关度标注信息。<br />2、doc pair 的数量将是 doc 数量的二次，从而 pointwise 类方法就存在的 query 间 doc 数量的不平衡性将在 pairwise 类方法中进一步放大。<br />3、pairwise 类方法相对 pointwise 类方法对噪声标注更敏感，即一个错误标注会引起多个 doc pair 标注错误。<br />4、pairwise 类方法仅考虑了 doc pair 的相对位置，损失函数还是没有 model 到预测排序中的位置信息。<br />5、pairwise 类方法也没有考虑同一个 query 对应的 doc pair 间的内部依赖性，即输入空间内的样本并不是 IID 的，违反了 ML 的基本假设，并且也没有充分利用这种样本间的结构性。</td>
+<td>listwise 类相较 pointwise、pairwise 对 ranking 的 model 更自然，解决了 ranking 应该基于 query 和 position 问题。<br />listwise 类存在的主要缺陷是：<br />一些 ranking 算法需要基于排列来计算 loss，从而使得训练复杂度较高，如 ListNet和 BoltzRank。<br />此外，位置信息并没有在 loss 中得到充分利用，可以考虑在 ListNet 和 ListMLE 的 loss 中引入位置折扣因子。</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>1、输入空间中样本是单个 doc（和对应 query）构成的特征向量；<br />2、输出空间中样本是单个 doc（和对应 query）的相关度；<br />3、假设空间中样本是打分函数；损失函数评估单个 doc 的预测得分和真实得分之间差异。</td>
+<td>输入空间中样本是（同一 query 对应的）两个 doc（和对应 query）构成的两个特征向量；<br />输出空间中样本是 pairwise preference；假设空间中样本是二变量函数；损失函数评估 doc pair 的预测 preference 和真实 preference 之间差异。</td>
+<td>输入空间中样本是（同一 query 对应的）所有 doc（与对应的 query）构成的多个特征向量（列表）；<br />输出空间中样本是这些 doc（和对应 query）的相关度排序列表或者排列；<br />假设空间中样本是多变量函数，对于 docs 得到其排列，实践中，通常是一个打分函数，根据打分函数对所有 docs 的打分进行排序得到 docs 相关度的排列；损失函数分成两类，一类是直接和评价指标相关的，还有一类不是直接相关的。</td>
+</tr>
+</tbody>
+</table>
+<h1>参考</h1>
+<ul>
+<li>转载</li>
+</ul>
+<ol>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://zhuanlan.zhihu.com/p/111636490">Learning to Rank： pointwise 、 pairwise 、 listwise</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://everdark.github.io/k9/notebooks/ml/learning_to_rank/learning_to_rank.html">Introduction to Learning-to-Rank</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.baidu.com/link?url=eTmEKqnuaVZEADp449zPJ2ape2WhtLcb15Z2qYhgDak1eqs5-YV1sg5s4PQ6aRoLJK39WdUIjvejdoh-A9Wps10JQJOHENZCIHfr-ooIK8i&amp;wd=&amp;eqid=dd34397e0016c6be00000003649aba54">【推荐】<em>pairwise</em>、<em>pointwise</em> 、 <em>listwise</em>算法是什么?怎么…</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://zhuanlan.zhihu.com/p/450959441">排序学习-2.排序学习方法分类 - 知乎 (zhihu.com)</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://zhuanlan.zhihu.com/p/337478373">推荐- Point wise、pairwise及list wise的比较 - 知乎 (zhihu.com)</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://JLChenTop.github.io">陈加乐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://jlchentop.github.io/posts/20230626151728-e7cc9d05.html">https://jlchentop.github.io/posts/20230626151728-e7cc9d05.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://JLChenTop.github.io" target="_blank">JLChenBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113133.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/20230613222744-8b05256b.html" title="Typora代码块-添加折叠展开按钮"><img class="cover" src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113407.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Typora代码块-添加折叠展开按钮</div></div></a></div><div class="next-post pull-right"><a href="/posts/20230626153850-8f8e2f5b.html" title="ReadyToRead"><img class="cover" src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113428.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">ReadyToRead</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">传统排序方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">Learning To Rank</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LTR%E9%87%87%E7%94%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0"><span class="toc-number">2.1.</span> <span class="toc-text">LTR采用机器学习</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">PointWise 单点法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PointWise-%E6%96%B9%E6%B3%95%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="toc-number">3.1.</span> <span class="toc-text">PointWise 方法存在的问题：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%BE%93%E5%85%A5%E5%92%8C%E8%BE%93%E5%87%BA%E5%BD%A2%E5%BC%8F%EF%BC%9A"><span class="toc-number">3.2.</span> <span class="toc-text">数据输入和输出形式：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">PairWise 配对法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pairwise-%E6%96%B9%E6%B3%95%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="toc-number">4.1.</span> <span class="toc-text">Pairwise 方法存在的问题：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%BE%93%E5%85%A5%E5%92%8C%E8%BE%93%E5%87%BA%E5%BD%A2%E5%BC%8F%EF%BC%9A-2"><span class="toc-number">4.2.</span> <span class="toc-text">数据输入和输出形式：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">ListWise 列表法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Measure-specific"><span class="toc-number">5.1.</span> <span class="toc-text">Measure-specific</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Non-measure-specific"><span class="toc-number">5.2.</span> <span class="toc-text">Non-measure specific</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">评价</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">参考</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By 陈加乐</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a href="https://jlchentop.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-zeabur-production-a4ec.up.railway.app',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-zeabur-production-a4ec.up.railway.app',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="true" data-text="I,LOVE,YOU" data-fontsize="30px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></body></html>
