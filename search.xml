@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>svn迁移到git-保留commit-history-转载总结</title>
+      <link href="/posts/20230905110807-230865b.html"/>
+      <url>/posts/20230905110807-230865b.html</url>
+      
+        <content type="html"><![CDATA[<ul><li>svn迁移到git-保留commit-history-转载总结</li></ul><h1>git svn方法迁移步骤</h1><h2 id="1-首先安装-svn与git">1. 首先安装 svn与git</h2><h2 id="2-获取用户">2. 获取用户</h2><p>到svn项目目录右键选中gitbash打开窗口，执行获取用户并映射成git样式账号命令如下：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn log -q | awk -F &#x27;|&#x27; &#x27;/^r/ &#123;sub(&quot;^ &quot;, &quot;&quot;, $2); sub(&quot; $&quot;, &quot;&quot;, $2); print $2&quot; = &quot;$2&quot; &lt;&quot;$2&quot;@qq.com&gt;&quot;&#125;&#x27; | sort -u &gt; userinfo.txt</span><br></pre></td></tr></table></figure><p>然后会在目录生成文件userinfo.txt样式如：zhansan = 张三 <a href="mailto:zhansan@qq.com">zhansan@qq.com</a></p><h2 id="3-拉取SVN代码">3. 拉取SVN代码</h2><p>新建个文件夹，将生成的userinfo.txt放入新建的文件夹，然后在新建的文件夹中右键选中gitbash弹出窗口后执行下面命令，拉取svn代码到本地新建文件夹中</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git svn clone https://svn_project_url/ --no-metadata --no-minimize-url --authors-file=userinfo.txt --no-minimize-url </span><br></pre></td></tr></table></figure><p>若是第一次拉取svn中一般会出现这个窗口提示，这个提示就填：p</p><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230905-111757.png" alt="7cf2e3c93edb4c9c964390f966819723"></p><p>填完p后，后面还会弹出窗口做相关验证，分别是</p><blockquote><p>操作系统的密码（若你电脑或者服务器设置了密码），</p><p>svn的账号，</p><p>svn的密码</p></blockquote><p>都填完了，就会开始拉去svn代码了</p><p>等一段时间，拉取完成后，当前目录生成一个项目文件夹，进入拉取代码完成后的项目文件夹中会看代码与生成的.git文件夹</p><p>3.右键选中gitbash在窗口中用git命令查看提交记录 （按q退出 ）</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br></pre></td></tr></table></figure><p>4.关联需要迁移的git库上项目地址（建议创建新的创库，避免合并出错），会弹窗验证，输入git账号密码</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://gitlab.yiwugo.com:10080/ywg-data-group/iprobe.git</span><br></pre></td></tr></table></figure><p>5.查看关联地址是否正确</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure><p>6.将远程仓库代码拉取到本地（注意当前分支）</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin master</span><br></pre></td></tr></table></figure><p>7.如果拉取时报错 ,说明远程仓库有操作记录，可以使用强制合并提交</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin master --allow-unrelated-histories</span><br></pre></td></tr></table></figure><p>8.合并到远程master分支</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure><p>9.若svn项目还有其他分支重复上面步骤合并到对应的git分支上即可。</p><h2 id="迁移异常">迁移异常</h2><h3 id="1-拉取svn代码异常">1.拉取svn代码异常</h3><p>由于项目较大，或者同时执行多个克隆命令 导致空间不足</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">libsvn: Out of memory - terminating application.</span><br><span class="line">      0 [main] perl 1976 cygwin_exception::open_stackdumpfile: Dumping stack trace to perl.exe.stackdump</span><br></pre></td></tr></table></figure><ul><li><p>打开新命令窗口 并执行：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git svn fetch</span><br></pre></td></tr></table></figure><p>会继续下载项目</p></li></ul><h1>别的方法</h1><ul><li>svn2git</li></ul><h1>参考</h1><ol><li><a href="https://blog.csdn.net/wuningw/article/details/126177661?spm=1001.2101.3001.6650.1&amp;utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-1-126177661-blog-129231978.235%5Ev38%5Epc_relevant_anti_t3&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-1-126177661-blog-129231978.235%5Ev38%5Epc_relevant_anti_t3&amp;utm_relevant_index=2">svn迁移到git实际操作（亲测有效）_wuningw的博客-CSDN博客</a></li><li><a href="https://cloud.tencent.com/developer/article/2149929">SVN 切换到 Git-腾讯云开发者社区-腾讯云 (tencent.com)</a></li><li><a href="https://blog.csdn.net/qq_39201012/article/details/124564465">svn 代码迁移到git_svn代码迁移到git_搬砖的祥子的博客-CSDN博客</a></li><li></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 项目管理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> svn,git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Web架构各层理解</title>
       <link href="/posts/20230815185446-316d88b8.html"/>
       <url>/posts/20230815185446-316d88b8.html</url>
