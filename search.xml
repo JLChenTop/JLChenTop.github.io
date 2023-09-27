@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>系统性能量化分析(2)-性能评测</title>
+      <link href="/posts/20230927100227-f17ad256.html"/>
+      <url>/posts/20230927100227-f17ad256.html</url>
+      
+        <content type="html"><![CDATA[<p>第二讲</p><p>王磊老师主讲</p><h1 id="评测的本质、要素、准则">评测的本质、要素、准则</h1><h3 id="评测的定位"><strong>评测的定位</strong></h3><p><strong>评测为计算机系统/体系结构提供设计输入和量化依据</strong></p><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-154555.png" alt="image-20230927154554572"></p><h3 id="评测的本质">评测的本质</h3><blockquote><p>&quot; The process of running <em><strong>a specific program or workload</strong></em>  on <em><strong>a specific  machine or system</strong></em> and measuring the resulting performance .”-----Saavedra, R. H., Smith, A. J.: Analysis of benchmark characteristics and benchmark performance prediction, ACM Transactions on Computer System, vol. 14, no. 4, (1996) 344-384</p></blockquote><ul><li><p>应用与系统之间的桥梁<br>A specific program or workload<br>A specific machine or system</p></li><li><p>目标: measuring the resulting performance</p></li></ul><h3 id="评测的要素">评测的要素</h3><p>目标系统、指标、负载/评测工具、实验分析</p><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-154821.png" alt="image-20230927154820810"></p><h3 id="评测的准则">评测的准则</h3><ul><li><p>Apple to Apple</p><blockquote><ol><li>在系统层次上是对等的</li><li>比较的指标也是对等的</li></ol></blockquote></li></ul><h1 id="评测基准概述">评测基准概述</h1><ul><li>评测的要素<br>目标系统、指标、负载/评测工具、实验分析</li></ul><h2 id="指标体系">指标体系</h2><h3 id="时间-：执行时间（Wall-Time）">时间 ：<strong>执行时间（Wall Time</strong>）</h3><p>基于时间的变形</p><blockquote><p>带宽：Bandwidth</p><p>延迟：Latency</p><p>吞吐率：Throughout</p><p>加速比：Speedup</p><p>效率：<strong>Efficiency</strong>：IPC、MIPS、FLOPS</p></blockquote><h4 id="效率评价指标">效率评价指标</h4><ol><li><p>MIPS:   Million Instructions Per Second</p><blockquote><ul><li>优点：从指令执行的角度，衡量计算机性能</li><li>缺点：指令相关的指标</li></ul></blockquote></li><li><p>IPC:    Instructions Per Cycle</p><blockquote><ul><li>微架构层次的指标</li></ul></blockquote></li><li><p>Flops :    Floating-point Operations Per Second</p><blockquote><ul><li>64位 的浮点乘、加操作</li><li>测试工具：Linpack<br>采用主元高斯消去法求解双精度稠密线性代数方程组(AX=b)，结果以每秒浮点运算次数（FLOPS）表示</li><li>实测峰值 &amp; 理论峰值<ul><li>实测峰值: FLOPS(每秒浮点运算次数) = FLOPs  <strong>/Execution_time</strong>  执行时间</li><li>理论峰值：主频  * 每个Cycle完成Flops的理论上限次数 * 处理器核数<br>Intel Xeon E5645:<br>2.4G(主频)  * 4(每个Cycle完成Flops的理论上限次数 )*6( 处理器核数) = 57.6GFLOPS</li><li></li></ul></li></ul></blockquote></li></ol><h3 id="指标的作用：量化系统的手段">指标的作用：量化系统的手段</h3><h3 id="如何设计指标体系">如何设计指标体系</h3><p>整个系统的指标 &amp; 关键模块指标</p><h2 id="负载-评测工具">负载/评测工具</h2><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-155206.png" alt="image-20230927155205699"></p><p>实现：不同编程语言</p><h3 id="Benchmarks-分类；构造级别、方法、原则">Benchmarks 分类；构造级别、方法、原则</h3><h4 id="评测基准的分类">评测基准的分类</h4><p>微基准：Micro-benchmark</p><p>宏基准：Macro-benchmark</p><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-155311.png" alt="image-20230927155310381"></p><h4 id="基准构建的五个层次">基准构建的五个层次</h4><blockquote><ol><li>Real applications</li><li>Modified(or scripted) applications</li><li>Kernels :  linpack 不单独成应用</li><li>Toy benchmarks</li><li>Synthetic benchmarks:   合成基准</li></ol></blockquote><h4 id="构造方法">构造方法</h4><ol><li><p>自顶向下Top-down</p><blockquote><p>representative program selection</p><p>can yield accurate representations of the program space of interest</p><p>usually impossible to make any form of hard statements about the representativeness</p></blockquote></li><li><p>自下向上 Bottom-up</p><blockquote><p>diverse range of characteristics</p><p>program characteristics are quantities that can be measured and compared</p><p>not all portions of the characteristics space are equally important</p><p>– C. Bienia. Benchmarking modern multiprocessors. PhD thesis, Princeton University, 2011.</p></blockquote></li></ol><h4 id="构造原则">构造原则</h4><p>主要原则：==代表和覆盖==</p><p>一定要有代表性，和覆盖全面</p><blockquote><p>要利于应用开发时考虑目标机器的系统结构特性，以保证系统结构的特性被充分测试<br>能够代表目标机器上的重要应用群<br>负载具有充分的多样性，能够覆盖一定的目标应用范围<br>程序采用最新的算法和实现技术</p></blockquote><ul><li>benchmarks suites：基准集合</li></ul><p>To overcome the danger of placing too many eggs in one basket, collections of benchmark applications, called benchmark suites, are a popular measure of performance of processors with a variety of applications</p><p>– Computer Architecture: A Quantitative Approach</p><p>为了克服在一个篮子中放太多鸡蛋的危险，基准应用程序的集合，称为基准套件，是衡量具有各种应用程序的处理器性能的流行方法——计算机体系结构：定量方法</p><h3 id="评测工具举例">评测工具举例</h3><ol><li><p>SPEC Benchmarks</p><blockquote><p>Standard Performance Evaluation Corporation(标准性能评估机构)</p><ul><li>涵盖众多领域<ol><li>处理器性能评测基准程序集(SPEC CPU)</li><li>文件服务器评测基准(SPECSPF)</li><li>Web服务器评测基准(SPECWeb)</li></ol></li></ul></blockquote></li><li><p>Linpack</p><blockquote><ul><li><p>应用领域：Top 500</p></li><li><p>Linpack Benchmarks用来度量系统的浮点计算能力</p><ol><li>测试系统求解稠密线性代数方程组Ax=b的效率</li><li>评测指标：MFLOPS (millions of floating point operations per second)</li><li>TOP 500排名的理论依据</li></ol></li></ul></blockquote></li><li><p>PARSEC</p><blockquote><ul><li><p>应用领域：处理器</p></li><li><p>Princeton Application Repository for Shared- Memory Computers(PARSEC)是用于测试CMPs(Chip-Multiprocessors)的多种应用程序的集合</p></li><li><p>负载和工作集覆盖了很多领域</p></li></ul></blockquote></li><li><p>TPC <strong>Benchmarks</strong></p><blockquote><ul><li><p>应用领域：数据库</p></li><li><p>数据库事务处理评测基准程序集</p></li><li><p>TPC-C: 评测服务器和数据库的OLTP性能</p><ol><li>a mid-weight read-write transaction (i.e., New-Order)</li><li>a light-weight read-write transaction (i.e., Payment)</li><li>a mid-weight read-only transaction (i.e., Order-Status)</li><li>a batch of mid-weight read-write transactions (i.e., Delivery)</li><li>a heavy-weight read-only transaction (i.e., Stock-Level)</li></ol></li></ul></blockquote></li></ol><h3 id="5-HPCC-HPC-Challenge">5.HPCC :    HPC Challenge</h3><blockquote><ul><li>内存访问模式 基准</li><li>First come at 2003, widely used in 2004</li></ul></blockquote><h4 id="HPCC-构成"><strong>HPCC</strong> <strong>构成</strong></h4><p>1.HPL-Linpack基准，测量求解线性方程组的浮点执行率。</p><p>2.DGEMM -测量双精度实矩阵-矩阵乘法执行的浮点率。</p><p>3.流-一个简单的合成基准程序，测量可持续的内存带宽（在GB/s）和相应的计算率的简单向量核。 4.PTRANS（并行矩阵转置）-练习了成对的处理器同时进行通信的通信。这是对网络总通信能力的一个有用的测试。</p><p>5.随机访问-测量内存的整数随机更新率（GUPS）。</p><p>6.FFT -度量双精度复一维离散傅里叶变换（DFT）执行的浮点率。</p><p>7.延迟-一组测试，用于测量多个同步通信模式的延迟和带宽；基于b_eff（有效带宽基准）。</p><h4 id="HPCC计算模式">HPCC计算模式</h4><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-164601.png" alt="image-20230927164600510"></p><h4 id="HPCC-Memory-Hierarchy-内存层次结构">HPCC Memory Hierarchy ;内存层次结构</h4><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-164647.png" alt="image-20230927164646378"></p><h4 id="HPCC的局部性特征">HPCC的局部性特征</h4><p>空间局部性和时间局部性</p><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-164933.png" alt="image-20230927164933274"></p><h2 id="实验与数据分析">实验与数据分析</h2><p>统计方法、原因分析</p><h1 id="案例">案例</h1><h2 id="评测工具使用">评测工具使用</h2><h3 id="性能单项评测">性能单项评测</h3><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-175711.png" alt="image-20230927175710954"></p><h3 id="网络测试-Iperf">网络测试-Iperf</h3><h3 id="CPU内存测试-Stream">CPU<strong>内存测试-Stream</strong></h3><p>Stream为业界公认的内存带宽测试程序，通过大维度的矢量数组的处理，评价计算机系统的内存性能。</p><p>Stream主要有四种数组的运算，分别是数组的复制，数组的尺度变换，数组的矢量去和，数</p><p>组的复合矢量求和。</p><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-191752.png" alt="image-20230927191751348"></p><ul><li><p><strong>带宽技术指标</strong></p><ul><li><strong>内存带宽理论值</strong><br>Intel Xeon X5650： 1333MHz*64(总线带宽)*3（通道数）<em>2（物理CPU数）=63.98GB</em><br><em>AMD Opteron 6136：1333MHz</em>64(总线带宽)*4（通道数）*2（物理CPU数）=85.3GB</li><li><strong>内存带宽测试值</strong><br>Intel 5650(12线程) 29.3GB =45.7%<br>AMD 6136(16线程) 49.0GB =57.4%</li></ul></li><li><h2 id="【测试平台】">【测试平台】</h2></li></ul><p>TC4600 CB60-G15</p><p>2*Intel Xeon E5-2670@2.6GHz</p><p>8<em>8GB DDR3 1600MHz**（双路节点理论带宽为1600</em>64<em>4</em>2/8=102400 MB/s）**</p><ul><li><h2 id="【编译参数，其它编译优化选项没有明显效果】">【编译参数，其它编译优化选项没有明显效果】</h2></li></ul><p>icc -O3 -xHost -openmp -DN=XXX</p><p>N=XXX<strong>指定Stream数组维数</strong></p><ul><li><h2 id="【运行参数，加上线程绑定测试结果稳定】">【运行参数，加上线程绑定测试结果稳定】</h2></li></ul><p>OMP_NUM_THREADS=16 KMP_AFFINITY=granularity=fine,nowarnings,compact</p><ul><li><h2 id="【测试结果】">【测试结果】</h2></li></ul><p>考察<strong>Stream N值的影响，设置N为L3 Cache 20MB（ 对应N值20<em>1024</em>1024/8=2621440）的倍数</strong></p><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-192353.png" alt="image-20230927192352335"></p><h2 id="大数据系统的量化评测">大数据系统的量化评测</h2><p>Big Data Benchmark</p><p>大数据计算抽象</p><h3 id="BigDataBench-概述">BigDataBench 概述</h3><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-192647.png" alt="image-20230927192646524"></p><h3 id="Dwarfs-大数据计算抽象"><strong>Dwarfs:</strong> <strong>大数据计算抽象</strong></h3><p>大数据计算操作模式抽象</p><p>◼ Units of computation</p><p>◼ <strong>a minimum set</strong> to represent <strong>maximum patterns</strong> of big data analytics</p><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-193448.png" alt="image-20230927193448233"></p><h3 id="开源大数据评测基准-BigDataBench">开源大数据评测基准**:BigDataBench**</h3><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-193055.png" alt="image-20230927193054594"></p><h3 id="大数据负载流水线行为">大数据负载流水线行为</h3><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-193824.png" alt="image-20230927193824062"></p><h3 id="大数据体系结构负载特征">大数据体系结构负载特征</h3><p>Scale-out 服务和传统Web服务(SPEC-Web, TPCC)属于同一类负载</p><ul><li><p><strong>数据分析负载是一类新负载</strong><br>计算密度低、数据移动为主、具有更多分支指令的的计算<br>第一瓶颈仍是后端停顿、第二瓶颈是前端停顿<br>软件栈对体系结构行为有着深刻影响<strong>1. 负载生成</strong></p><p><strong>2. 服务分解</strong></p><p><strong>3. 经验预测</strong></p></li><li><p>​用不同软件栈实现相同应用**:** L1I cache miss率有一个数量级差距</p></li></ul><h3 id="处理器优化建议">处理器优化建议</h3><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/09/20230927-193902.png" alt="image-20230927193901959"></p><h2 id="性能分析模型">性能分析模型</h2><ol><li><p>负载生成</p></li><li><p>服务分解</p></li><li><p>经验预测</p></li></ol><h1 id="参考">参考</h1>]]></content>
+      
+      
+      <categories>
+          
+          <category> 计算机 </category>
+          
+          <category> 系统 </category>
+          
+          <category> 系统性能量化分析 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 性能评测 </tag>
+            
+            <tag> 大数据系统性能评测 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>svn迁移到git-保留commit-history-转载总结</title>
       <link href="/posts/20230905110807-230865b.html"/>
       <url>/posts/20230905110807-230865b.html</url>
@@ -13,6 +44,8 @@
       
       <categories>
           
+          <category> 软件 </category>
+          
           <category> 项目管理 </category>
           
       </categories>
@@ -20,7 +53,9 @@
       
         <tags>
             
-            <tag> svn,git </tag>
+            <tag> svn </tag>
+            
+            <tag> git </tag>
             
         </tags>
       
@@ -37,6 +72,8 @@
       
       
       <categories>
+          
+          <category> 计算机 </category>
           
           <category> 架构 </category>
           
@@ -65,6 +102,8 @@
       
       <categories>
           
+          <category> 计算机 </category>
+          
           <category> 框架 </category>
           
           <category> RPC框架 </category>
@@ -92,6 +131,8 @@
       
       <categories>
           
+          <category> 计算机 </category>
+          
           <category> 框架 </category>
           
           <category> Web框架 </category>
@@ -118,6 +159,8 @@
       
       
       <categories>
+          
+          <category> 计算机 </category>
           
           <category> 框架 </category>
           
@@ -148,13 +191,15 @@
       
       <categories>
           
-          <category> 框架 </category>
-          
-          <category> Web框架 </category>
-          
           <category> Python </category>
           
           <category> Flask </category>
+          
+          <category> 计算机 </category>
+          
+          <category> 框架 </category>
+          
+          <category> Web框架 </category>
           
       </categories>
       
@@ -180,6 +225,8 @@
       
       
       <categories>
+          
+          <category> 软件 </category>
           
           <category> 前端 </category>
           
@@ -210,9 +257,9 @@
       
       <categories>
           
-          <category> 杂谈 </category>
-          
           <category> 计算机 </category>
+          
+          <category> 杂谈 </category>
           
       </categories>
       
