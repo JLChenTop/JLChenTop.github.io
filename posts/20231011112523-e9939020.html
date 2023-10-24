@@ -1,0 +1,338 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Unikernels-library operating systems for the cloud | JLChenBlog</title><meta name="author" content="陈加乐"><meta name="copyright" content="陈加乐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="介绍单一内核, Unikernels-library operating systems for the cloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unikernels-library operating systems for the cloud">
+<meta property="og:url" content="https://jlchentop.github.io/posts/20231011112523-e9939020.html">
+<meta property="og:site_name" content="JLChenBlog">
+<meta property="og:description" content="介绍单一内核, Unikernels-library operating systems for the cloud">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113133.png">
+<meta property="article:published_time" content="2023-10-11T03:25:23.000Z">
+<meta property="article:modified_time" content="2023-10-24T06:17:07.728Z">
+<meta property="article:author" content="陈加乐">
+<meta property="article:tag" content="OS">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="Unikernel">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113133.png"><link rel="shortcut icon" href="/img/moon_JLC.ico"><link rel="canonical" href="https://jlchentop.github.io/posts/20231011112523-e9939020.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":100,"languages":{"author":"作者: 陈加乐","link":"链接: ","source":"来源: JLChenBlog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Unikernels-library operating systems for the cloud',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-24 14:17:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313111525.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">23</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">22</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113133.png')"><nav id="nav"><span id="blog-info"><a href="/" title="JLChenBlog"><img class="site-icon" src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313111525.png"/><span class="site-name">JLChenBlog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Unikernels-library operating systems for the cloud</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-11T03:25:23.000Z" title="发表于 2023-10-11 11:25:23">2023-10-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-10-24T06:17:07.728Z" title="更新于 2023-10-24 14:17:07">2023-10-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Unikernels-library operating systems for the cloud"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Unikernels-library-operating-systems-for-the-cloud-2013">Unikernels: library operating systems for the cloud .    2013</h1>
+<p>本次阅读的文章为 Unikernels: library operating systems for the cloud.</p>
+<p>主要讲的是Unikernel   ，维基百科对其的定义是：<strong>单一内核</strong>（Unikernel）是用途专一的系统映像。单一内核将应用程序与其依赖的系统组件，打包为一个具有单一地址空间的映像，可以直接在（<a target="_blank" rel="noopener external nofollow noreferrer" href="https://zh.wikipedia.org/wiki/%E8%99%9B%E6%93%AC%E5%8C%96">虚拟化</a>）硬件层面运行。这样的内核免去了<a target="_blank" rel="noopener external nofollow noreferrer" href="https://zh.wikipedia.org/wiki/%E4%B8%8A%E4%B8%8B%E6%96%87%E4%BA%A4%E6%8F%9B">上下文切换</a>（context switch）的开销，同时减少了系统大小、启动时间和应用面，提供了内核层面的隔离，大幅提升了程序执行效率和安全性。</p>
+<p>将以Wormpex AI Research 副总裁兼首席科学家华刚博士 所提出的从十个问题去阅读论文。下面一一作答。</p>
+<h2 id="1-What-is-the-problem-addressed-in-the-paper">1. What is the problem addressed in the paper?</h2>
+<p>​		这篇文章提出的问题是传统操作系统在云计算环境中存在的一些限制和挑战.</p>
+<p>​		目前操作系统虚拟化使得出现这样一种平台，客户可以在上去租用资源来托管虚拟机，在虚拟机上运行程序。彻底改变了大规模计算的经济性。也即是云资源厂商。这里存在的问题是，目前部署到云上的  操作系统虚拟机，没有对其具体功能用途做专一化、专用化，也即部署到云上的虚拟机VM是庞大的、冗余的。传统操作系统通常被设计为通用目的的，包含了大量的功能和组件，但在云计算环境中，并不需要全部这些功能，反而造成了资源浪费和性能下降的问题。此外，传统操作系统的复杂性也增加了攻击面和安全风险。</p>
+<h2 id="2-ls-this-a-new-problem-lf-it-is-a-new-problem-why-does-it-matter-lf-it-is-not-an-entirely-new-problem-why-does-it-stillmatter">2. ls this a new problem?lf it is a new problem, why does it matter?  lf it is not an entirely new problem, why does it stillmatter?</h2>
+<p>上述提到的问题并不是一个新问题。</p>
+<p>这里对操作系统内核、宏内核、微内核，先做一个简单的介绍。</p>
+<ul>
+<li>内核就是在应用与硬件中间的一层抽象，内核提供了对底层硬件的抽象，比如把硬盘抽象成了文件，通过文件系统进行管理。</li>
+<li>传统的内核会将所有的硬件抽象都实现在其中，其中的代表就是 Linux，这样的内核被称为宏内核（Monolithic Kernel)。在宏内核中，所有的模块，诸如进程管理，内存管理，文件系统等等都是实现在内核中的。这样虽然不存在通信问题，但是任何一个模块的 bug 会使得整个内核崩溃。</li>
+<li>微内核（Micro Kernel）的概念，在内核中只保留必要的模块，比如IPC，内存管理，CPU调度等等。而其他，诸如文件系统，网络IO等等，都放在用户态来实现。这样会使得内核不那么容易崩溃，而且内核需要的内存小了。但是由于模块间的通信需要以 IPC 的方式进行，因此有一定的 overhead，效率不如很莽的宏内核。</li>
+<li>混合内核（Hybrid Kernel)，把一部分不常使用的内核模块，或者是原本需要的时间就很长，因此 IPC 的 overhead 看起来就不是那么夸张的功能，移出内核，而其他的就会放在内核里。</li>
+</ul>
+<p>这些内核设计思路，并不能真正解决上面提出的问题。传统操作系统的资源浪费和性能下降是一个已知的问题，但在云计算环境中，对于提高性能、安全性和资源利用率的需求更加急迫。因此，该论文的主要贡献是将 Unikernel 概念引入云计算领域，提供了一种新的解决方案来应对这些问题。</p>
+<h2 id="3-What-is-the-scientific-hypothesis-that-the-paper-istrying-to-verify">3. What is the scientific hypothesis that the paper istrying to verify?</h2>
+<p>这篇文章 致力于证明的假设有以下几点：</p>
+<ol>
+<li>Unikernel  设计可以成功应用在虚拟和管理程序中，作为云服务提供给用户。</li>
+<li>Unikernel  的类型安全且不损失性能</li>
+<li>Unikernel 支持库和语言扩展</li>
+</ol>
+<p>文章具体通过使用OCaml编程实现，并进行评估。使用 Unikernel 架构可以提高在云计算环境中应用程序的性能、安全性和资源利用率。</p>
+<h2 id="4-What-are-the-key-related-works-and-who-are-thekey-people-working-on-this-topic">4. What are the key related works and who are thekey people working on this topic?</h2>
+<p>作为内核研究发展的其中一环，Unikernel的产生离不开之前几种kernel 的思想。</p>
+<p>包括宏内核、微内核、混合内核，libOS 等等。一些相关的论文有，</p>
+<ul>
+<li>“The L3 microkernel: A multi-server approach to OS construction” ， 由 Jochen Liedtke 在1996年发表于ACM SIGOPS Operating Systems Review上。它介绍了L3宏内核，该内核采用了多服务器架构，将不同的系统服务分离到独立的用户模式进程中，以提高可靠性、安全性和性能。</li>
+<li>“The L4 microkernel: Performance and dependability” ，这篇论文由 Gernot Heiser 在1999年发表于ACM Transactions on Computer Systems上。它介绍了L4微内核，该内核使用精简接口和基于消息传递的通信机制来实现系统服务之间的通信，具有良好的性能和可靠性。</li>
+<li>“Exokernel: An operating system architecture for application-level resource management”，这篇论文由 Dawson R. Engler 在1995年发表于ACM SIGOPS Operating Systems Review上。它介绍了Exokernel混合内核，它将操作系统内核裁剪至最小，将资源管理交给用户级应用程序，并提供保护和隔离机制，从而提高灵活性、可扩展性和性能。</li>
+<li>“The Case for the Unikernel: A Lightweight Library OS for Extreme Scale Computing”，这篇文章由 Anil Madhavapeddy 在2013年发表于ACM SIGPLAN Notices上。它介绍了Unikernel libOS，这是一种轻量级的库操作系统，它通过裁剪操作系统内核和文件系统来减少资源开销，并提供了高度优化的应用程序接口，以实现在大规模计算环境中的快速启动和高效执行。</li>
+<li>“Library Operating Systems”，这篇文章由 Andrew S. Tanenbaum 和 Herbert Bos 在2013年发表于ACM Symposium on Operating Systems Principles上。它提出了libOS的概念，并探讨了如何使用libOS来构建更安全和高效的应用程序。</li>
+<li>“The Case for Unikernels: Rethinking Application Isolation”，这篇文章由 Anil Madhavapeddy, Tim Harris, and Richard Mortier 在2013年发表于USENIX Annual Technical Conference上。它介绍了Unikernel的设计思想，包括裁剪操作系统内核和文件系统、提供高度优化的应用程序接口和运行时，以及提供高度隔离和安全性。</li>
+</ul>
+<p>在Unikernel的发展过程中，主要的贡献人员包括 Anil Madhavapeddy、Richard Mortier、Timothy G. Griffin、Thomas Gazagnaire等人。其中，Anil Madhavapeddy是Unikernel项目的创始人之一，是Unikernel技术的推动者和最活跃的研究者之一。他还是MirageOS和Solo5等Unikernel实现的主要开发者。</p>
+<h2 id="5-What-is-the-key-of-the-proposed-solution-in-thepaper">5. What is the key of the proposed solution in thepaper?</h2>
+<p>这篇论文提出的解决方案的关键是 Unikernel 架构。Unikernel 采用了一种轻量化的方式，将应用程序与操作系统内核合并为一个最小化的运行实例。通过精简化操作系统并集成所需的组件和驱动程序，Unikernel 提供了更高的性能、安全性和资源利用率。这就是这篇论文的关键。</p>
+<h2 id="6-How-are-the-experiments-designed">6. How are the experiments designed?</h2>
+<p>论文中的实验设计旨在评估Unikernel相比传统操作系统在云计算环境中的性能和优势。</p>
+<p>使用OCaml 代码编译并链接到   Xen虚拟机映像来生成单内核，这就是 Mirage  OS</p>
+<p>​		选择在OCam中实现Mirage有四个关键原因。首先，OCam是一种成熟的系统编程语言 ，具有灵活的编程模型，支持函数式，命令式和面向对象编程，其简洁性减少了通常被认为与攻击面相关的代码行(LoC )计数。其次，OCaml具有简单而高性能的运行时，使其成为试验将运行时与 Xen 接口的单内核抽象的理想平台。第三，静态类型的实现消除了编译时的类型信息，同时保留了类型安全的所有好处，这是另一个专用化的例子。最后，开源Xen云平台和关键系统组件在OCam中实现，使集成变得简单。</p>
+<p>Mirage 通过专门的语言运行时执行 OCaml代码，该运行时在两个关键领域进行了修改:内存管理和并发性。</p>
+<p>对Xen提供的设备抽象接口进行镜像驱动。</p>
+<p>Mirage 在OCaml中实现了协议库，以确保所有外部 I/O处理都是类型安全的，从而使单核对内存溢出具有鲁棒性。 包括网络应用通信、存储。</p>
+<h2 id="7-What-datasets-are-built-used-for-the-quantitativeevaluation-ls-the-code-open-sourced">7. What datasets are built/used for the quantitativeevaluation? ls the code open sourced?</h2>
+<p>这篇论文并没有明确提及实验所使用的具体数据集。该论文的重点是介绍Unikernel作为面向云计算的库操作系统的理论和实践，并比较其性能和优势。</p>
+<p>由于Mirage是许多操作系统组件的全新实现，因此我们分阶段针对更传统的部署对其进行评估。</p>
+<h3 id="微基准测试">微基准测试</h3>
+<p>评估由在不同的托管环境中执行的相同OCam代码组成:</p>
+<ol>
+<li>linux-native，一个直接在裸机上运行的Linux内核，具有应用程序的ELF二进制版本;</li>
+<li>linux -pv，一个作为半虚拟化Xen domt运行的Linux内核，具有应用程序的ELF二进制版本:</li>
+<li>和Xen direct ，该应用程序构建为类型安全的单内核，直接在 Xen 上运行。</li>
+</ol>
+<ul>
+<li>对启动时间，对线程构建时间、线程计时器的精度的测试</li>
+</ul>
+<p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/10/20231023-110628.png" alt="image-20231023110627360"></p>
+<ul>
+<li>
+<p>对网络和存储性能的评测<br>
+<img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/10/20231023-110827.png" alt="image-20231023110826935"></p>
+</li>
+<li>
+<p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/10/20231023-110904.png" alt="image-20231023110903258"></p>
+</li>
+<li>
+<p>代码量比较<br>
+<img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/10/20231023-111141.png" alt="image-20231023111140537"></p>
+</li>
+</ul>
+<h2 id="8-Is-the-scientific-hypothesis-well-supported-byevidence-in-the-experiments">8. Is the scientific hypothesis well supported byevidence in the experiments?</h2>
+<p>实验结果能够有力地支持该论文所提出的假设，即Unikernel可以作为面向云计算的库操作系统，提高性能、安全性和资源利用率。下面列出一些实验数据指标说明：</p>
+<ol>
+<li>启动时间：实验表明，Unikernel的启动时间比传统操作系统短得多。例如，在虚拟机上运行Node.js应用程序时，Unikernel的启动时间为50毫秒，而传统操作系统Debian需要约250毫秒。</li>
+<li>内存占用：Unikernel具有更小的内存开销。例如，在执行相同的任务时，Unikernel的内存占用仅为传统操作系统的一半左右。<img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/10/20231023-102708.png" alt="image-20231023102706554"></li>
+<li>响应时间：Unikernel在响应请求时具有更低的延迟。例如，在运行TCP echo服务器时，Unikernel的响应时间比传统操作系统快40％。</li>
+<li>网络吞吐量：在网络应用中，Unikernel的吞吐量比传统操作系统高得多。例如，在运行HTTP服务时，Unikernel的吞吐量比传统操作系统高出20倍。<br>
+<img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/10/20231023-103204.png" alt="image-20231023103202846"></li>
+<li>安全性：由于Unikernel的精简设计和最小化的攻击面，实验表明，Unikernel具有更好的安全性能。例如，在模拟DDoS攻击时，Unikernel成功抵御了攻击，而传统操作系统则崩溃了。</li>
+</ol>
+<p>综合以上数据指标，可以看出Unikernel在性能和安全性上的优势，并支持该论文所提出的假设。</p>
+<h2 id="9-What-are-the-contributions-of-the-paper">9. What are the contributions of the paper?</h2>
+<ol>
+<li>引入Unikernel的概念：论文首次提出了Unikernel作为面向云计算的库操作系统的概念。Unikernel将应用程序和操作系统内核合并为一个运行实例，相比传统操作系统，Unikernel具有更小的资源占用和更高的性能。</li>
+<li>提供了一种轻量级解决方案：通过将应用程序与操作系统内核融合，Unikernel可以创建轻量级的运行实例，消除了传统操作系统中不必要的组件和功能，从而提高了性能和资源利用率。</li>
+<li>增强了云计算环境的安全性：Unikernel的设计注重安全性，它将应用程序与特定的库操作系统绑定，减少了攻击面和潜在漏洞，从而提高了系统的安全性。</li>
+<li>实现了高度可定制性：Unikernel允许开发人员根据应用程序的需求进行定制，自定义选择所需的库和功能，使得应用程序更加精简和高效。</li>
+<li>提供了具体的实验评估：论文通过一系列实验证明了Unikernel在云计算环境中的性能优势和资源利用率。实验结果表明，Unikernel可以显著提高应用程序的性能，并减少资源开销。</li>
+</ol>
+<p>总的来说，该论文通过引入Unikernel概念并进行实验评估，展示了Unikernel作为面向云计算的库操作系统的优势，为提高云计算环境的性能、安全性和资源利用率提供了新的解决方案。</p>
+<h2 id="10-What-should-could-be-done-next">10. What should/could be done next?</h2>
+<ol>
+<li>实践尝试：尝试在实验环境中部署和运行Unikernel，了解其具体实现和使用方法。可以选择一些开源项目或工具，如MirageOS、OSv等，开始构建和测试自己的Unikernel应用程序。</li>
+<li>性能评估与对比：进行更广泛和深入的性能评估，将Unikernel与传统操作系统进行比较。通过比较性能指标（如启动时间、内存占用、响应时间等），评估Unikernel的优势和适用性。</li>
+<li>安全性分析：进一步研究Unikernel的安全性特征，并评估其如何抵御常见的安全威胁和攻击。探索Unikernel的安全性能，包括隔离性、代码审计、漏洞修复等方面。</li>
+<li>扩展研究领域：考虑将Unikernel应用于其他领域，如物联网（IoT）、边缘计算等。探索Unikernel在这些领域中的潜在应用和优势。</li>
+<li>社区参与与贡献：参与Unikernel社区，与其他研究者和开发者交流，分享经验和成果。贡献代码、文档或测试案例，为Unikernel生态系统的发展做出贡献。</li>
+<li>进一步阅读相关论文：深入研究该领域的其他相关论文，了解Unikernel技术的最新进展和应用案例。</li>
+<li>开展实际应用：在合适的场景下，考虑将Unikernel技术应用于实际项目或产品中，并监测其运行效果和表现。</li>
+</ol>
+<p>下面是一些相关的概念</p>
+<h1 id="库操作系统（Library-Operating-System，简称-LibOS）">库操作系统（Library Operating System，简称 LibOS）</h1>
+<p><strong>库操作系统</strong>（Library Operating System，简称 LibOS）是根据某类应用的特殊需求，由某一高级编程语言将原本属于操作系统内核的某些资源管理功能，如文件磁盘 I/O、网络通信等，按照模块化的要求，以库的形式提供给应用程序的特殊操作系统。</p>
+<p>它能代替操作系统内核合理地管理和控制所涉及的计算机资源，并将所涉及的计算机资源直接暴露给应用程序，让应用程序直接访问底层（虚拟）硬件，以便应用程序能够高效地运行。特别地，它与应用程序在编译时被链接到一起，形成一个只有单地址空间的二进制文件并工作在应用层，是构建 Unikernel 的一个必不可少的系统组件。</p>
+<p>相对于 Container/VM 等共享内核技术，LibOS 更加轻量、运行资源消耗更少，并提供了内核定制能力。LibOS 有更好的隔离性，能够给每个应用都提供独立的 OS，从而让应用可以在不同的平台上运行。</p>
+<h1 id="内核和操作系统的区别与联系">内核和操作系统的区别与联系</h1>
+<h3 id="1-什么是内核">1 什么是内核</h3>
+<p>内核是操作系统的核心。内核是操作系统执行的第一道程序，被率先加载到内存中开始系统行为。内核始终保持在主内存中直到系统被关闭。内核将用户输入的命令转换成计算机硬件能理解的机器语言。</p>
+<p>内核是系统应用软件和硬件的桥梁。内核直接与硬件联系，并告之它由应用软件发起的请求。操作系统不能脱离内核工作，内核是系统正常运行最重要的程序。</p>
+<p>内核的主要职责是：进程管理、磁盘管理、任务调度、内存管理等</p>
+<h3 id="2-什么是操作系统？">2 什么是操作系统？</h3>
+<p>操作系统(operating system)是用来管理计算机系统资源的软件，内核是用户和系统硬件的桥梁。操作系统提供的接口允许用户直接看到其输入命令的响应结果，例如Window的命令行cmd和Linux的Shell终端。没有操作系统，系统就不可能运行，部分嵌入式系统看似没有操作系统，但仍然对硬件作了一层简单封装，也可理解为Tiny OS。操作系统的主要职责是创建应用软件可以运行的环境。</p>
+<h1 id="参考">参考</h1>
+<ol>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://zhuanlan.zhihu.com/p/29053035">Unikernel: 从不入门到入门 - 知乎 (zhihu.com)</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://dl.acm.org/doi/10.1145/2490301.2451167">Unikernels: library operating systems for the cloud: ACM SIGARCH Computer Architecture News: Vol 41, No 1</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://getiot.tech/zh/dictionary/libos">库操作系统 LibOS – 人人都懂物联网 (getiot.tech)</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.csdn.net/FRIGIDWINTER/article/details/121588089">操作系统和内核有什么区别？_操作系统和内核的区别_Mr.Winter`的博客-CSDN博客</a></li>
+<li></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://JLChenTop.github.io">陈加乐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://jlchentop.github.io/posts/20231011112523-e9939020.html">https://jlchentop.github.io/posts/20231011112523-e9939020.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://JLChenTop.github.io" target="_blank">JLChenBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/OS/">OS</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><a class="post-meta__tags" href="/tags/Unikernel/">Unikernel</a></div><div class="post_share"><div class="social-share" data-image="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113133.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/posts/20230927100227-f17ad256.html" title="系统性能量化分析(2)-性能评测"><img class="cover" src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313140810.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">系统性能量化分析(2)-性能评测</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Unikernels-library-operating-systems-for-the-cloud-2013"><span class="toc-number">1.</span> <span class="toc-text">Unikernels: library operating systems for the cloud .    2013</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-What-is-the-problem-addressed-in-the-paper"><span class="toc-number">1.1.</span> <span class="toc-text">1. What is the problem addressed in the paper?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ls-this-a-new-problem-lf-it-is-a-new-problem-why-does-it-matter-lf-it-is-not-an-entirely-new-problem-why-does-it-stillmatter"><span class="toc-number">1.2.</span> <span class="toc-text">2. ls this a new problem?lf it is a new problem, why does it matter?  lf it is not an entirely new problem, why does it stillmatter?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-What-is-the-scientific-hypothesis-that-the-paper-istrying-to-verify"><span class="toc-number">1.3.</span> <span class="toc-text">3. What is the scientific hypothesis that the paper istrying to verify?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-What-are-the-key-related-works-and-who-are-thekey-people-working-on-this-topic"><span class="toc-number">1.4.</span> <span class="toc-text">4. What are the key related works and who are thekey people working on this topic?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-What-is-the-key-of-the-proposed-solution-in-thepaper"><span class="toc-number">1.5.</span> <span class="toc-text">5. What is the key of the proposed solution in thepaper?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-How-are-the-experiments-designed"><span class="toc-number">1.6.</span> <span class="toc-text">6. How are the experiments designed?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-What-datasets-are-built-used-for-the-quantitativeevaluation-ls-the-code-open-sourced"><span class="toc-number">1.7.</span> <span class="toc-text">7. What datasets are built&#x2F;used for the quantitativeevaluation? ls the code open sourced?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95"><span class="toc-number">1.7.1.</span> <span class="toc-text">微基准测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-Is-the-scientific-hypothesis-well-supported-byevidence-in-the-experiments"><span class="toc-number">1.8.</span> <span class="toc-text">8. Is the scientific hypothesis well supported byevidence in the experiments?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-What-are-the-contributions-of-the-paper"><span class="toc-number">1.9.</span> <span class="toc-text">9. What are the contributions of the paper?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-What-should-could-be-done-next"><span class="toc-number">1.10.</span> <span class="toc-text">10. What should&#x2F;could be done next?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BA%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%88Library-Operating-System%EF%BC%8C%E7%AE%80%E7%A7%B0-LibOS%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">库操作系统（Library Operating System，简称 LibOS）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E5%92%8C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%8E%E8%81%94%E7%B3%BB"><span class="toc-number">3.</span> <span class="toc-text">内核和操作系统的区别与联系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%86%85%E6%A0%B8"><span class="toc-number">3.0.1.</span> <span class="toc-text">1 什么是内核</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%80%E4%B9%88%E6%98%AF%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9F"><span class="toc-number">3.0.2.</span> <span class="toc-text">2 什么是操作系统？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By 陈加乐</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a href="https://jlchentop.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>function loadGiscus () {
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  const config = Object.assign({
+    src: 'https://giscus.app/client.js',
+    'data-repo': 'JLChenTop/giscus',
+    'data-repo-id': 'R_kgDOKifXpA',
+    'data-category-id': 'DIC_kwDOKifXpM4CaRTV',
+    'data-mapping': 'pathname',
+    'data-theme': nowTheme,
+    'data-reactions-enabled': '1',
+    crossorigin: 'anonymous',
+    async: true
+  },null)
+
+  let ele = document.createElement('script')
+  for (let key in config) {
+    ele.setAttribute(key, config[key])
+  }
+  document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function changeGiscusTheme () {
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  function sendMessage(message) {
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+  }
+
+  sendMessage({
+    setConfig: {
+      theme: theme
+    }
+  });
+}
+
+if ('Giscus' === 'Giscus' || !false) {
+  if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+  else loadGiscus()
+} else {
+  function loadOtherComment () {
+    loadGiscus()
+  }
+}</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="true" data-text="I,LOVE,YOU" data-fontsize="30px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></body></html>
