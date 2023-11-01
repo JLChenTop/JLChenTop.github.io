@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>GitLearn</title>
+      <link href="/posts/20231101190921-a70a1639.html"/>
+      <url>/posts/20231101190921-a70a1639.html</url>
+      
+        <content type="html"><![CDATA[<p>GitLearn</p><p><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/11/20231101-194034.png" alt="git"></p><p>基本流程</p><ol><li><p>使用git命令将远程仓库上的文件克隆到本地仓库中</p></li><li><p>从本地仓库中检出文件到工作区(一般都自动完成)</p></li><li><p>将新创建的文件添加到暂存区</p></li><li><p>将暂存区中的内容提交到本地仓库</p></li><li><p>将本地仓库中的内容推送到远程仓库上</p></li></ol><h2 id="Git-远程分支，远程跟踪分支，跟踪分支的区别">Git-远程分支，远程跟踪分支，跟踪分支的区别</h2><h3 id="远程分支">远程分支</h3><p>远程分支对应的英文为remote branch，其就是在远程仓库的普通分支，比如远程仓库上的master，自己在远程仓库创建的分支，以及自己推送到远程仓库上去的在远程仓库上的分支。当运行git push （仓库名） 分支名 的命令时，便会在远程仓库创建远程分支。</p><h3 id="远程跟踪分支">远程跟踪分支</h3><p>远程跟踪分支对应的英文名称为remote-tracking branch，虽然仅仅多了tracking这个词，但是其作用与性质却与远程分支有很大的不同，远程跟踪分支是本地仓库对远程仓库中的某个远程分支的状态的记录，它们以 <code>“(远程仓库名)/(分支名)”</code> 形式命名。 例如，如果你想要看你最后一次与远程仓库 <code>origin</code> 通信时<code>master</code> 分支的状态，你可以查看 <code>origin/master</code> 分支。远程跟踪分支的作用是告诉用户其所跟踪的远程分支的状态（即指向哪一个commit），因而它在本地是只读的，用户是无法自行修改它的指向。其指向将在用户与远程仓库通信时自动改变，这里的通信是指执行诸如git fetch等从远程仓库获取数据的操作</p><h3 id="跟踪分支">跟踪分支</h3><p>跟踪分支的英文名称为tracking branch，从一个远程跟踪分支产生出的一个本地分支便是跟踪分支，该本地分支对应的远程跟踪分支称为上游分支。跟踪分支是与远程分支有直接关系的本地分支，当克隆一个仓库时，它通常会自动地创建一个跟踪 <code>origin/master</code> 的 <code>master</code> 分支。创建跟踪分支可以使用git checkout -b [branch] [remotename]/[branch]，还可以使用–track快捷方式</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b serverfix origin/serverfix</span><br><span class="line">Branch serverfix set up to track remote branch serverfix from origin.</span><br><span class="line">Switched to a new branch &#x27;serverfix&#x27;</span><br><span class="line">$ git checkout --track origin/serverfix</span><br><span class="line">Branch serverfix set up to track remote branch serverfix from origin.</span><br><span class="line">Switched to a new branch &#x27;serverfix&#x27;</span><br></pre></td></tr></table></figure><p>更多创建方式可参见git pro 3.5节。</p><ul><li><h2 id="那么跟踪分支有什么作用呢？">那么跟踪分支有什么作用呢？</h2><p>跟踪分支为本地分支和远程分支之间建立了一种联系，方便了远程分支和本地分支的同步。 如果在一个跟踪分支上输入 <code>git pull</code>，Git 能自动地识别去哪个服务器上抓取、合并到哪个分支。同时，跟踪分支还能查看本地分支与对应的远程分支之间的超前落后情况，如使用git branch -vv语句</p></li></ul><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git branch -vv</span></span><br><span class="line">  iss53     7e424c3 [origin/iss53: ahead 2] forgot the brackets</span><br><span class="line">  master    1ae2a45 [origin/master] deploying index fix</span><br><span class="line">* serverfix f8674d9 [teamone/server-fix-good: ahead 3, behind 1] this should do it</span><br><span class="line">  testing   5ea463a trying something new</span><br></pre></td></tr></table></figure><p>这里可以看到 <code>iss53</code> 分支正在跟踪 <code>origin/iss53</code> 并且 “ahead” 是 2，意味着本地有两个提交还没有推送到服务器上。 也能看到 <code>master</code> 分支正在跟踪 <code>origin/master</code> 分支并且是最新的。 接下来可以看到 <code>serverfix</code> 分支正在跟踪 <code>teamone</code> 服务器上的 <code>server-fix-good</code> 分支并且领先 3 落后 1，意味着服务器上有一次提交还没有合并入同时本地有三次提交还没有推送。 最后看到 <code>testing</code> 分支并没有跟踪任何远程分支。</p><h3 id="小结">小结</h3><p>远程分支就是在远程仓库上的普通分支。远程跟踪分支是在本地的只读的记录远程分支状态的分支，其指向用户无法移动，当使用git fetch等指令时其指向会依照远程仓库自动移动。跟踪分支是从远程跟踪分支上生成的本地分支，跟踪分支提供了本地分支与远程分支更紧密的联系，可以看出本地分支与对应的远程分支的超前落后情况，也可以使用git pull 指令轻松的将远程分支拉取到对应的跟踪分支。</p><ol><li><h2 id="dev分支合并到master分支">dev分支合并到master分支</h2></li></ol><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 切到master</span><br><span class="line">git checkout master</span><br><span class="line"></span><br><span class="line">// dev分支的代码合并到master分支</span><br><span class="line">git merge dev </span><br><span class="line"></span><br><span class="line">// 查看状态</span><br><span class="line">git status </span><br><span class="line"></span><br><span class="line">// 提交远程</span><br><span class="line">git push origin master </span><br></pre></td></tr></table></figure><h1 id="reference">reference</h1><ol><li><a href="https://blog.csdn.net/zhuyucheng123/article/details/55045339">Git-远程分支，远程跟踪分支，跟踪分支的区别_set as tracked branch-CSDN博客</a></li><li><a href="https://blog.csdn.net/weixin_45586038/article/details/124199125">git 分支合并（dev合并到master分支）_git dev合并到master-CSDN博客</a></li><li><a href="https://blog.csdn.net/lmm0513/article/details/117417775">git常用命令及命令流程_git常用的命令有哪些(5分)?说一下你在开发过程中合并代码流程(5分)_明子～的博客-CSDN博客</a></li><li></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 软件 </category>
+          
+          <category> 项目管理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Unikernels-library operating systems for the cloud</title>
       <link href="/posts/20231011112523-e9939020.html"/>
       <url>/posts/20231011112523-e9939020.html</url>
@@ -75,7 +102,7 @@
       
       <categories>
           
-          <category> python </category>
+          <category> Python </category>
           
       </categories>
       
@@ -111,7 +138,7 @@
             
             <tag> svn </tag>
             
-            <tag> git </tag>
+            <tag> Git </tag>
             
         </tags>
       
