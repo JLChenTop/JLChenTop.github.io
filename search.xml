@@ -66,6 +66,31 @@
     
     
     <entry>
+      <title>python中的一些概念 call、name、main</title>
+      <link href="/posts/20230918160142-7025481f.html"/>
+      <url>/posts/20230918160142-7025481f.html</url>
+      
+        <content type="html"><![CDATA[<ul><li>python</li></ul><h1 id="callable-和-call">callable  和__call__</h1><p>大多数教程都告诉你int()是python的内置函数，然而当你看到int的定义，发现它竟然是类</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class int(object):</span><br><span class="line">    pass</span><br></pre></td></tr></table></figure><p>不只是int(),还有float()， bool()， str()，很多你以为是函数但实际上却是类，但是呢，当你使用它们时完全察觉不出它们有什么不同，本文不是要和你讨论类和函数，而是要讨论学习callable</p><h2 id="什么是callable">什么是callable</h2><p><strong>一个可callable的对象</strong>是指可以被调用执行的对象，并且可以传入参数，</p><p>用另一个简单的描述方式，只要可以在一个对象的后面使用小括号来执行代码，那么这个对象就是callable对象，</p><p>下面列举callable对象的种类</p><ol><li>函数</li><li>类</li><li>类里的函数</li><li>实现了__call__方法的实例对象</li></ol><h3 id="2-1-函数">2.1 函数</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def test():</span><br><span class="line">    print(&#x27;ok&#x27;)</span><br><span class="line"></span><br><span class="line">print(callable(test))   # True</span><br><span class="line">test()  # ok</span><br></pre></td></tr></table></figure><p>函数是python里的一等公民，函数是可调用对象，使用callable函数可以证明这一点</p><h3 id="2-2-类">2.2 类</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Stu(object):</span><br><span class="line">    def __init__(self, name):</span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(callable(Stu))     # True</span><br><span class="line">print(Stu(&#x27;小明&#x27;).name)   # 小明</span><br></pre></td></tr></table></figure><p>在其他编程语言里，类与函数可以说是两个完全不搭的东西，但在python里，都是可调用对象</p><h3 id="2-3-类里的方法">2.3 类里的方法</h3><p>类里的方法也是用def定义的，本质上也是函数</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from inspect import isfunction, ismethod</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Stu(object):</span><br><span class="line">    def __init__(self, name):</span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    def run(self):</span><br><span class="line">        print(&#x27;&#123;name&#125; is running&#x27;.format(name=self.name))</span><br><span class="line"></span><br><span class="line">print(isfunction(Stu.run))     # True</span><br><span class="line">stu = Stu(&quot;小明&quot;)</span><br><span class="line">stu.run()        # 小明 is running</span><br></pre></td></tr></table></figure><p>使用isfunction函数可以判断一个对象是否是函数，run方法也是可调用对象</p><h3 id="2-4-实现了-call-方法的实例对象">2.4 实现了__call__方法的实例对象</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Stu(object):</span><br><span class="line"></span><br><span class="line">    def __init__(self, name):</span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    def __call__(self, *args, **kwargs):</span><br><span class="line">        self.run()</span><br><span class="line"></span><br><span class="line">    def run(self):</span><br><span class="line">        print(&#x27;&#123;name&#125; is running&#x27;.format(name=self.name))</span><br><span class="line"></span><br><span class="line">stu = Stu(&#x27;小明&#x27;)</span><br><span class="line">print(callable(stu))    # True</span><br><span class="line">stu()                   # 小明 is running</span><br></pre></td></tr></table></figure><p>当你执行stu()时，与调用一个函数有着完全一致的体验，如果不告诉你stu是一个类的实例对象，你还以为stu就是一个函数。</p><h1 id="name-和-main"><strong>name</strong> 和 <strong>main</strong></h1><ul><li><em><strong>“__main__” 始终指当前执行模块的名称（<a href="http://xn--uiryxwc810s.py">包含后缀.py</a>）</strong></em></li><li><strong>模块被直接执行的时候，__name__ 等于字符串 “ __main__”<br><em>如果该模块 import 到其他模块中，则该模块的 __name__ 等于模块名称（<a href="http://xn--ihqy4jzwakdr79u.py">不包含后缀.py</a>）</em></strong></li><li>print(__file__)  :  文件绝对路径，c:\Users\13450\Desktop\test.py</li></ul><blockquote><ol><li>在Python中，凡是以两个下划线开头，两个下划线结尾的变量叫做“魔法变量”。瓦特？魔法变量？对，你没有听错，就是魔法变量。当然，如果你觉得这个词不好理解的话，你可以简单地认为所谓魔法变量就是Python对象内置天生就有的属性变量，你使用这些变量前不需要自己去定义，直接用就是。当然，既然是天生就有的，你也别去修改它，正常使用就好。</li><li>Python中每个py文件都叫一个模块。系统里面我们经常导入的模块，比如什么os啊，math啊，这些它们的本质都是一个个的py文件。当然，我们自己写的每个py文件也都是一个个的模块，咱们可以把它看成是一个自定义模块。模块既然就是Python文件，那么它就有两种运行方式：一种是直接运行，另外一种是导入别的模块中再运行。</li></ol></blockquote><h2 id="if-name-‘main’-的作用">if <strong>name</strong> == ‘<strong>main</strong>’:的作用</h2><p>一个python文件通常有两种使用方法，</p><p>第一是作为脚本直接执行，<br>第二是 import 到其他的 python 脚本中被调用（模块重用）执行。</p><p>因此 if <strong>name</strong> == ‘__main__’: 的作用就是控制这两种情况执行代码的过程，在 if <strong>name</strong> ==  ‘__main__’: 下的代码只有在第一种情况下（即文件作为脚本直接执行）才会被执行，而 import 到其他脚本中是不会被执行的。</p><h2 id="if-name-‘main’-的运行原理">if <strong>name</strong> == ‘<strong>main</strong>’:的运行原理</h2><p>每个python模块（python文件，也就是此处的 <a href="http://test.py">test.py</a> 和 import_test.py）都包含内置的变量__name__，当该模块被直接执行的时候，__name__ 等于文件名（包含后缀 .py ）；如果该模块 import 到其他模块中，则该模块的 __name__ 等于模块名称（<a href="http://xn--ihqy4jzwakdr79u.py">不包含后缀.py</a>）。</p><p>而 “__main__” 始终指当前执行模块的名称（<a href="http://xn--uiryxwc810s.py">包含后缀.py</a>）。进而当模块被直接执行时，__name__ == ‘main’ 结果为真。</p><p>当模块A被导入到模块B中时，一旦运行模块B，模块A中的语句会自动被执行一遍，以便加载模块A中的所有函数定义啊、类定义等语句到内存中等待被使用。</p><h1 id="参考">参考</h1><ol><li><a href="https://zhuanlan.zhihu.com/p/191419441">python 中的callable概念 - 知乎 (zhihu.com)</a></li><li><a href="https://blog.csdn.net/heqiang525/article/details/89879056">Python中if <strong>name</strong> == ‘<strong>main</strong>‘：的作用和原理_python if-CSDN博客</a></li><li><a href="https://zhuanlan.zhihu.com/p/360804564">Python中if <strong>name</strong> == '<strong>main</strong>’的作用是什么 - 知乎 (zhihu.com)</a></li><li></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> python </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>svn迁移到git-保留commit-history-转载总结</title>
       <link href="/posts/20230905110807-230865b.html"/>
       <url>/posts/20230905110807-230865b.html</url>
@@ -240,6 +265,8 @@
             <tag> Flask </tag>
             
             <tag> Web框架 </tag>
+            
+            <tag> python </tag>
             
         </tags>
       
