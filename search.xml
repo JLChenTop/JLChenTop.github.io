@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>shell脚本</title>
+      <link href="/posts/20231227174236-d0a69eae.html"/>
+      <url>/posts/20231227174236-d0a69eae.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="shell脚本">shell脚本</h1><p>经验几大原则：</p><ol><li><p>脚本里执行任务，一定cd到任务目录，</p><blockquote><p>防止任务内读取文件，使用相对路径</p><p>例子</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;conf/conf.json&quot;</span>, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    config = json.load(f)</span><br></pre></td></tr></table></figure></blockquote></li><li></li></ol><h1 id="end">end</h1>]]></content>
+      
+      
+      <categories>
+          
+          <category> 计算机 </category>
+          
+          <category> Coding </category>
+          
+          <category> shell </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> shell </tag>
+            
+            <tag> shell脚本 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>高级操作系统-do_page_fault</title>
       <link href="/posts/20231213113939-8506dd65.html"/>
       <url>/posts/20231213113939-8506dd65.html</url>
@@ -113,7 +144,9 @@
           
           <category> 计算机 </category>
           
-          <category> 编程 </category>
+          <category> Coding </category>
+          
+          <category> shell </category>
           
       </categories>
       
@@ -820,7 +853,9 @@
           
           <category> 计算机 </category>
           
-          <category> 编程 </category>
+          <category> Coding </category>
+          
+          <category> shell </category>
           
       </categories>
       
