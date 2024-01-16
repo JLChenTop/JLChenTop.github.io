@@ -135,7 +135,7 @@
       <link href="/posts/20231121214507-53383f30.html"/>
       <url>/posts/20231121214507-53383f30.html</url>
       
-        <content type="html"><![CDATA[<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -5000  ~/script/timer/logs/hbaseLogJob|grep &quot;23/11/21&quot;|grep &quot;Finished task&quot;  |grep &quot;stage 3.0&quot; |awk &#x27;&#123;print $7,$14&#125;&#x27;|sort -nk 1 </span><br></pre></td></tr></table></figure><p>这是一个使用终端命令行的例子，它会输出一些日志信息和统计结论。下面是对这个例子的解释：</p><ol><li><p><code>tail -5000  ~/script/timer/logs/hbaseLogJob</code>: 查看文件 <code>~/script/timer/logs/hbaseLogJob</code> 的最后 5000 行内容。</p></li><li><p><code>grep &quot;23/11/21&quot;</code>: 过滤出包含日期为 “23/11/21” 的行。</p></li><li><p><code>grep &quot;Finished task&quot;</code>: 过滤出包含 “Finished task” 的行。</p></li><li><p><code>grep &quot;stage 3.0&quot;</code>: 过滤出包含 “stage 3.0” 的行。</p></li><li><p><code>awk '&#123;print $7,$14&#125;'</code>: 提取第 7 和第 14 列，并打印在一起。</p></li><li><p><code>sort -nk 1</code>: 按照第一个字段进行数字排序。</p></li></ol><p>以上命令的意义是查找 <code>~/script/timer/logs/hbaseLogJob</code> 中符合条件的行，并按照第 7 和第 14 列进行排序输出。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(base) [iprobe@node118 202311]$ cat access1-20231116.log.* | grep &quot;tj=&quot; | awk &#x27;&#123;if($6~&quot;tj=&quot; )print $0&#125;&#x27; | awk &#x27;&#123;print $6&quot; &quot;$(NF-2)&#125;&#x27; | awk -F &quot;\&quot;&quot; &#x27;&#123;print $1$2&#125;&#x27; | awk &#x27;BEGIN&#123;sum=0 ;count=0&#125; &#123;sum +=$2; count++;&#125;  END &#123;print &quot; sum=&quot;sum&quot; count=&quot;count &quot; avg=&quot;sum/count&#125;&#x27; sum=3312.68 count=59274 avg=0.0558875</span><br></pre></td></tr></table></figure><p>另一条命令：</p><ol><li><p><code>cat access1-20231116.log.*</code>: 查看以 <code>access1-20231116.log.</code> 开头的所有文件。</p></li><li><p><code>grep &quot;tj=&quot;</code>: 过滤出包含 “tj=” 的行。</p></li><li><p><code>awk '&#123;if($6~&quot;tj=&quot; )print $0&#125;'</code>: 如果第 6 列包含 “tj=”，则输出整行数据。</p></li><li><p><code>awk '&#123;print $6&quot; &quot;$(NF-2)&#125;'</code>: 提取第 6 列和倒数第二列，并打印在一起。</p></li><li><p><code>awk -F &quot;\&quot;&quot; '&#123;print $1$2&#125;'</code>: 去掉双引号。</p></li><li><p><code>awk 'BEGIN&#123;sum=0 ;count=0&#125; &#123;sum +=$2; count++;&#125;  END &#123;print &quot; sum=&quot;sum&quot; count=&quot;count &quot; avg=&quot;sum/count&#125;'</code>: 对第二列数据进行求和、计数和平均值操作，最后输出结果。</p></li></ol><p>以上命令的意义是查找符合条件的行，提取第 6 列和倒数第二列的数据，去掉双引号，对第二列数据进行统计分析，并输出结果。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">less stdout |grep &quot;search&quot; |awk -F &#x27;/&#x27; &#x27;&#123;print $3 $4&#125;&#x27; |awk -F &#x27;?&#x27; &#x27;&#123;print $1&#125;&#x27; |sort -k 1|uniq -c |sort -nk 1</span><br></pre></td></tr></table></figure><p>这是一个Linux命令行管道，用于对标准输出进行过滤、提取和排序。下面是每个命令的解释：</p><ol><li><code>less stdout</code>: 将标准输出传递给<code>less</code>命令，以便以分页方式查看内容。</li><li><code>grep &quot;search&quot;</code>: 在输入中搜索包含&quot;search&quot;关键字的行。</li><li><code>awk -F '/' '&#123;print $3 $4&#125;'</code>: 使用&quot;/&quot;作为字段分隔符，提取第三个和第四个字段，并将它们打印出来。</li><li><code>awk -F '?' '&#123;print $1&#125;'</code>: 使用&quot;?&quot;作为字段分隔符，提取第一个字段，并将其打印出来。</li><li><code>sort -k 1</code>: 以第一个字段为键进行排序。</li><li><code>uniq -c</code>: 统计相邻的重复行，并显示每个行重复出现的次数。</li><li><code>sort -nk 1</code>: 按照第一个字段的数值排序（以数字方式进行排序）。</li></ol><p>请注意，这只是一个示例命令，具体的使用场景和输入数据可能需要进行调整。less stdout |grep “search” |awk -F ‘/’ ‘{print $3 $4}’ |awk -F ‘?’ ‘{print $1}’ |sort -k 1|uniq -c |sort -nk 1</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="awk">awk</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(base) [iprobe@node118 202311]$ cat access1-20231116.log.* | grep &quot;tj=&quot; | awk &#x27;&#123;if($6~&quot;tj=&quot; )print $0&#125;&#x27; | awk &#x27;&#123;print $6&quot; &quot;$(NF-2)&#125;&#x27; | awk -F &quot;\&quot;&quot; &#x27;&#123;print $1$2&#125;&#x27; | awk &#x27;BEGIN&#123;sum=0 ;count=0&#125; &#123;sum +=$2; count++;&#125;  END &#123;print &quot; sum=&quot;sum&quot; count=&quot;count &quot; avg=&quot;sum/count&#125;&#x27; sum=3312.68 count=59274 avg=0.0558875</span><br></pre></td></tr></table></figure><p>另一条命令：</p><ol><li><p><code>cat access1-20231116.log.*</code>: 查看以 <code>access1-20231116.log.</code> 开头的所有文件。</p></li><li><p><code>grep &quot;tj=&quot;</code>: 过滤出包含 “tj=” 的行。</p></li><li><p><code>awk '&#123;if($6~&quot;tj=&quot; )print $0&#125;'</code>: 如果第 6 列包含 “tj=”，则输出整行数据。</p></li><li><p><code>awk '&#123;print $6&quot; &quot;$(NF-2)&#125;'</code>: 提取第 6 列和倒数第二列，并打印在一起。</p></li><li><p><code>awk -F &quot;\&quot;&quot; '&#123;print $1$2&#125;'</code>: 去掉双引号。</p></li><li><p><code>awk 'BEGIN&#123;sum=0 ;count=0&#125; &#123;sum +=$2; count++;&#125;  END &#123;print &quot; sum=&quot;sum&quot; count=&quot;count &quot; avg=&quot;sum/count&#125;'</code>: 对第二列数据进行求和、计数和平均值操作，最后输出结果。</p></li></ol><p>以上命令的意义是查找符合条件的行，提取第 6 列和倒数第二列的数据，去掉双引号，对第二列数据进行统计分析，并输出结果。</p><h2 id="sort">sort</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">less stdout |grep &quot;search&quot; |awk -F &#x27;/&#x27; &#x27;&#123;print $3 $4&#125;&#x27; |awk -F &#x27;?&#x27; &#x27;&#123;print $1&#125;&#x27; |sort -k 1|uniq -c |sort -nk 1</span><br><span class="line"></span><br><span class="line">sort -t &#x27;,&#x27; 指定 &#x27;,&#x27;分隔</span><br><span class="line">sort -r  从大到小</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>这是一个Linux命令行管道，用于对标准输出进行过滤、提取和排序。下面是每个命令的解释：</p><ol><li><code>less stdout</code>: 将标准输出传递给<code>less</code>命令，以便以分页方式查看内容。</li><li><code>grep &quot;search&quot;</code>: 在输入中搜索包含&quot;search&quot;关键字的行。</li><li><code>awk -F '/' '&#123;print $3 $4&#125;'</code>: 使用&quot;/&quot;作为字段分隔符，提取第三个和第四个字段，并将它们打印出来。</li><li><code>awk -F '?' '&#123;print $1&#125;'</code>: 使用&quot;?&quot;作为字段分隔符，提取第一个字段，并将其打印出来。</li><li><code>sort -k 1</code>: 以第一个字段为键进行排序。</li><li><code>uniq -c</code>: 统计相邻的重复行，并显示每个行重复出现的次数。</li><li><code>sort -nk 1</code>: 按照第一个字段的数值排序（以数字方式进行排序）。</li></ol><p>请注意，这只是一个示例命令，具体的使用场景和输入数据可能需要进行调整。less stdout |grep “search” |awk -F ‘/’ ‘{print $3 $4}’ |awk -F ‘?’ ‘{print $1}’ |sort -k 1|uniq -c |sort -nk 1</p><h2 id="sed">sed</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">不加参数i就只看到结果，没写入a.txt文件</span><br><span class="line"></span><br><span class="line">1，删除首行</span><br><span class="line">sed -i &#x27;1d&#x27; a.txt</span><br><span class="line"></span><br><span class="line">2，删除前100行</span><br><span class="line"></span><br><span class="line">sed -i &#x27;1,100d&#x27; a.txt</span><br><span class="line"></span><br><span class="line">3，删除尾行</span><br><span class="line">sed -i &#x27;$d&#x27; a.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure><h1 id="reference">reference</h1><ol><li><a href="https://www.cnblogs.com/along21/p/10366886.html">Linux文本三剑客超详细教程—grep、sed、awk - alonghub - 博客园 (cnblogs.com)</a></li><li><a href="https://www.linuxcool.com/">Linux命令大全(手册) – 真正好用的Linux命令在线查询网站 (linuxcool.com)</a></li><li></li></ol>]]></content>
       
       
       <categories>
@@ -644,6 +644,8 @@
           
           <category> 架构 </category>
           
+          <category> Web架构 </category>
+          
       </categories>
       
       
@@ -671,7 +673,7 @@
           
           <category> 计算机 </category>
           
-          <category> 框架 </category>
+          <category> 架构 </category>
           
           <category> RPC框架 </category>
           
@@ -700,7 +702,7 @@
           
           <category> 计算机 </category>
           
-          <category> 框架 </category>
+          <category> 架构 </category>
           
           <category> Web框架 </category>
           
@@ -729,7 +731,7 @@
           
           <category> 计算机 </category>
           
-          <category> 框架 </category>
+          <category> 架构 </category>
           
           <category> RPC框架 </category>
           
@@ -760,7 +762,7 @@
           
           <category> 计算机 </category>
           
-          <category> 框架 </category>
+          <category> 架构 </category>
           
           <category> Web框架 </category>
           
