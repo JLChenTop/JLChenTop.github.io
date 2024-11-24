@@ -1,0 +1,436 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>深度学习中的embedding范式 | JLChenBlog</title><meta name="author" content="陈加乐"><meta name="copyright" content="陈加乐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="深度学习中的embedding范式 1. 什么是embedding 在深度学习中，embedding是指将高维度的离散特征映射到低维度的连续空间中，以便模型能够更好地学习特征之间的关系。embedding的目的是将离散特征转换为连续特征，使得模型能够更好地学习特征之间的相似性和关联性，从而提高模型的泛化能力和性能。 Embedding 是深度学习中一种重要的表示学习技术，旨在将高维或离散数据映射到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习中的embedding范式">
+<meta property="og:url" content="https://jlchentop.github.io/posts/20241124110839-eb76e80b.html">
+<meta property="og:site_name" content="JLChenBlog">
+<meta property="og:description" content="深度学习中的embedding范式 1. 什么是embedding 在深度学习中，embedding是指将高维度的离散特征映射到低维度的连续空间中，以便模型能够更好地学习特征之间的关系。embedding的目的是将离散特征转换为连续特征，使得模型能够更好地学习特征之间的相似性和关联性，从而提高模型的泛化能力和性能。 Embedding 是深度学习中一种重要的表示学习技术，旨在将高维或离散数据映射到">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113407.png">
+<meta property="article:published_time" content="2024-11-24T03:08:39.000Z">
+<meta property="article:modified_time" content="2024-11-24T14:49:26.907Z">
+<meta property="article:author" content="陈加乐">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113407.png"><link rel="shortcut icon" href="/img/moon_JLC.ico"><link rel="canonical" href="https://jlchentop.github.io/posts/20241124110839-eb76e80b.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":100,"languages":{"author":"作者: 陈加乐","link":"链接: ","source":"来源: JLChenBlog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '深度学习中的embedding范式',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-24 22:49:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313111525.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">51</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">28</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113407.png')"><nav id="nav"><span id="blog-info"><a href="/" title="JLChenBlog"><img class="site-icon" src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313111525.png"/><span class="site-name">JLChenBlog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">深度学习中的embedding范式</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-11-24T03:08:39.000Z" title="发表于 2024-11-24 11:08:39">2024-11-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-11-24T14:49:26.907Z" title="更新于 2024-11-24 22:49:26">2024-11-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="深度学习中的embedding范式"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="深度学习中的embedding范式">深度学习中的embedding范式</h1>
+<h2 id="1-什么是embedding">1. 什么是embedding</h2>
+<p>在深度学习中，embedding是指将高维度的离散特征映射到低维度的连续空间中，以便模型能够更好地学习特征之间的关系。embedding的目的是将离散特征转换为连续特征，使得模型能够更好地学习特征之间的相似性和关联性，从而提高模型的泛化能力和性能。</p>
+<p>Embedding 是深度学习中一种重要的表示学习技术，旨在将高维或离散数据映射到连续、低维的实数向量空间。这种低维表示保留了数据的语义信息，并能够使离散的类别数据适合于深度学习模型处理。</p>
+<hr>
+<h3 id="Embedding-的原理"><strong>Embedding 的原理</strong></h3>
+<ol>
+<li>
+<p><strong>定义</strong><br>
+Embedding 可以理解为一种编码方式，将离散的输入（如单词、类别或图像特征）转化为实数向量。这些向量位于一个连续空间中，其中距离关系通常反映输入数据之间的语义相似性。</p>
+</li>
+<li>
+<p><strong>实现机制</strong><br>
+Embedding 的核心是通过一个嵌入矩阵 ( W \in \mathbb{R}^{|V| \times d} ) 实现：</p>
+<ul>
+<li>( |V| )：输入数据的类别数量（如词汇表大小）。</li>
+<li>( d )：嵌入向量的维度。</li>
+</ul>
+<p>对于一个输入索引 ( i )，通过查表操作提取 ( W ) 中的第 ( i ) 行，得到对应的嵌入向量 ( \mathbf{e}_i )。</p>
+</li>
+<li>
+<p><strong>训练</strong></p>
+<ul>
+<li><strong>随机初始化</strong>：嵌入矩阵 ( W ) 通常在训练开始时被随机初始化。</li>
+<li><strong>梯度更新</strong>：通过反向传播，嵌入矩阵会随着目标任务（如分类、语言建模）的损失函数进行更新。</li>
+<li><strong>语义优化</strong>：优化后，相似输入的嵌入向量通常会更加接近，从而反映语义上的相似性。</li>
+</ul>
+</li>
+<li>
+<p><strong>常见模型</strong></p>
+<ul>
+<li><strong>Word2Vec</strong>: 使用上下文窗口预测单词的共现关系。</li>
+<li><strong>GloVe</strong>: 基于全局共现矩阵生成嵌入。</li>
+<li><strong>Transformer-based Embedding</strong>: 使用 Transformer 模型，如 BERT 和 GPT，通过深度上下文生成动态的词嵌入。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="2-Embedding-的优缺点">2. Embedding 的优缺点</h2>
+<h3 id="优点"><strong>优点</strong></h3>
+<ol>
+<li>
+<p><strong>低维紧凑表示</strong>：</p>
+<ul>
+<li>大幅降低了高维离散数据的表示复杂度。</li>
+<li>能够减少存储空间，提高计算效率。</li>
+</ul>
+</li>
+<li>
+<p><strong>语义捕捉能力</strong>：</p>
+<ul>
+<li>嵌入向量在连续空间中可以捕捉输入的语义和关系（如同义词或上下文依赖性）。</li>
+</ul>
+</li>
+<li>
+<p><strong>模型兼容性</strong>：</p>
+<ul>
+<li>嵌入作为深度学习的输入特征，便于与各种神经网络架构（如卷积网络、循环网络、Transformer）结合。</li>
+</ul>
+</li>
+<li>
+<p><strong>任务迁移</strong>：</p>
+<ul>
+<li>通过预训练的嵌入（如 Word2Vec 或 BERT 嵌入），可以在多个下游任务上复用，提高泛化能力。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="缺点"><strong>缺点</strong></h3>
+<ol>
+<li>
+<p><strong>解释性差</strong>：</p>
+<ul>
+<li>嵌入向量的语义难以直观解释，具体维度的含义通常不明确。</li>
+</ul>
+</li>
+<li>
+<p><strong>训练依赖性强</strong>：</p>
+<ul>
+<li>嵌入质量高度依赖于训练数据的规模和质量，不适合小规模数据集。</li>
+<li>对长尾分布数据表现较差（如稀有词汇或类别）。</li>
+</ul>
+</li>
+<li>
+<p><strong>动态上下文局限</strong>：</p>
+<ul>
+<li>传统静态嵌入（如 Word2Vec、GloVe）无法适应动态上下文，而动态嵌入（如 BERT）计算成本较高。</li>
+</ul>
+</li>
+<li>
+<p><strong>维度选择挑战</strong>：</p>
+<ul>
+<li>嵌入维度 ( d ) 的选择需要权衡表示能力和计算成本，维度过小可能丢失信息，维度过大可能导致过拟合。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-embeddings变换为什么经常使用加法操作">3. embeddings变换为什么经常使用加法操作</h2>
+<p>在推荐系统、图神经网络（GNNs）以及注意力机制中，嵌入向量（embeddings）之间的变换经常使用加法操作。这种做法有效的原因及其替代方案如下：</p>
+<h3 id="使用加法操作的原因">使用加法操作的原因</h3>
+<ol>
+<li>
+<p>信息融合<br>
+加法操作可以有效地将多个嵌入向量的信息融合在一起，而不会丢失任何一个向量的信息。每个嵌入向量的不同维度通常代表不同的特征或属性，通过加法操作，这些特征可以被综合起来，形成一个新的、综合的表示。</p>
+</li>
+<li>
+<p>保持信息的线性关系<br>
+加法操作是一种线性变换，它可以保持嵌入向量之间的线性关系。这对于许多机器学习模型（尤其是基于线性模型的变体）是非常重要的，因为这些模型通常假设输入特征之间存在线性关系。</p>
+</li>
+<li>
+<p>梯度传播<br>
+在深度学习模型中，加法操作在反向传播过程中可以有效地传递梯度。这意味着在训练过程中，模型可以更稳定地更新参数，避免梯度消失或梯度爆炸的问题。</p>
+</li>
+<li>
+<p>简单性和效率<br>
+加法操作非常简单，计算成本低，易于实现。在大规模数据和复杂模型中，这一点尤为重要。现代深度学习框架（如TensorFlow和PyTorch）都高度优化了加法操作，可以在GPU等硬件上高效运行。</p>
+</li>
+<li>
+<p>保持向量空间的结构<br>
+嵌入向量通常在高维向量空间中表示，这些空间通常具有某种结构（如距离、相似度等）。加法操作可以保持这些结构，使得新的嵌入向量仍然具有合理的几何意义。例如，在词嵌入中，向量的加法操作可以捕捉到语义上的关系（如“king” + “woman” - “man” ≈ “queen”）。</p>
+</li>
+<li>
+<p><strong>线性组合的简单性和效率</strong>：</p>
+<ul>
+<li>加法是一种简单的线性组合方式，计算成本低，易于实现。</li>
+<li>在深度学习框架中，加法操作可以高效地利用硬件加速（如GPU）。</li>
+</ul>
+</li>
+<li>
+<p><strong>保持信息的完整性</strong>：</p>
+<ul>
+<li>加法操作可以将多个嵌入向量的信息合并在一起，而不会丢失任何一个向量的信息。</li>
+<li>对于推荐系统和GNNs，加法可以有效地聚合邻居节点的信息，保留每个节点的贡献。</li>
+</ul>
+</li>
+<li>
+<p><strong>可解释性</strong>：</p>
+<ul>
+<li>加法操作的结果通常更容易理解和解释，特别是在特征工程和调试过程中。</li>
+</ul>
+</li>
+<li>
+<p><strong>梯度传播</strong>：</p>
+<ul>
+<li>加法操作在反向传播过程中可以有效地传递梯度，有助于模型的优化。</li>
+</ul>
+</li>
+</ol>
+<h3 id="替代方案">替代方案</h3>
+<p>尽管加法操作在许多情况下非常有效，但在某些场景下，其他操作也可能更合适：</p>
+<ol>
+<li>
+<p><strong>拼接（Concatenation）</strong>：</p>
+<ul>
+<li>拼接操作将多个嵌入向量连接成一个更大的向量。</li>
+<li>优点：保留了每个嵌入向量的原始信息，不会发生信息丢失。</li>
+<li>缺点：增加了后续层的参数数量，可能导致模型复杂度增加。</li>
+<li>应用场景：当需要保留每个嵌入向量的独立信息时，例如在多模态学习中。</li>
+</ul>
+</li>
+<li>
+<p><strong>逐元素乘法（Element-wise Multiplication）</strong>：</p>
+<ul>
+<li>逐元素乘法将两个嵌入向量对应位置的元素相乘。</li>
+<li>优点：可以增强某些特征的权重，抑制其他特征。</li>
+<li>缺点：可能会导致信息的丢失，特别是在某些特征接近零时。</li>
+<li>应用场景：当需要强调某些特征而抑制其他特征时，例如在注意力机制中。</li>
+</ul>
+</li>
+<li>
+<p><strong>注意力机制（Attention Mechanism）</strong>：</p>
+<ul>
+<li>注意力机制通过计算权重来决定每个嵌入向量的重要性，然后加权求和。</li>
+<li>优点：可以动态地调整每个嵌入向量的权重，更加灵活和适应性强。</li>
+<li>缺点：增加了模型的复杂度，需要额外的参数来计算权重。</li>
+<li>应用场景：当需要根据上下文动态调整特征重要性时，例如在序列建模和推荐系统中。</li>
+</ul>
+</li>
+<li>
+<p><strong>池化操作（Pooling）</strong>：</p>
+<ul>
+<li>池化操作（如最大池化或平均池化）可以用于从多个嵌入向量中提取关键信息。</li>
+<li>优点：可以减少信息的维度，提高模型的鲁棒性。</li>
+<li>缺点：可能会丢失一些细节信息。</li>
+<li>应用场景：当需要减少信息维度并保留关键特征时，例如在图像处理和文本分类中。</li>
+</ul>
+</li>
+</ol>
+<h3 id="结论">结论</h3>
+<p>加法操作在嵌入向量变换中非常有效，因为它简单、高效且能保留信息的完整性。然而，根据具体应用场景和需求，其他操作（如拼接、逐元素乘法、注意力机制和池化操作）也可能更合适。选择合适的操作方法需要综合考虑模型的复杂度、计算效率和任务的具体需求。</p>
+<h2 id="应用场景"><strong>应用场景</strong></h2>
+<ol>
+<li>
+<p><strong>自然语言处理 (NLP)</strong>：</p>
+<ul>
+<li>词嵌入（Word Embedding）：如 Word2Vec、GloVe、FastText。</li>
+<li>子词嵌入：处理 OOV（Out of Vocabulary）问题。</li>
+<li>动态嵌入：如 BERT 和 GPT 的上下文嵌入。</li>
+</ul>
+</li>
+<li>
+<p><strong>推荐系统</strong>：</p>
+<ul>
+<li>用户和物品的嵌入表示，用于计算相似度或协同过滤。</li>
+</ul>
+</li>
+<li>
+<p><strong>计算机视觉</strong>：</p>
+<ul>
+<li>图像特征嵌入（如 FaceNet 提取人脸特征）。</li>
+<li>类别嵌入，用于多任务学习或迁移学习。</li>
+</ul>
+</li>
+<li>
+<p><strong>图数据分析</strong>：</p>
+<ul>
+<li>节点嵌入（如 DeepWalk、Node2Vec）和图结构嵌入（如 GraphSAGE、GAT）。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="总结"><strong>总结</strong></h3>
+<p>Embedding 是深度学习中不可或缺的工具，其核心思想是将离散数据嵌入到一个连续的向量空间，便于捕捉复杂的语义信息并加速模型训练。然而，其效果往往依赖于数据的规模和任务的复杂性，在实际应用中需要结合具体场景灵活选择和调整嵌入方法。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://JLChenTop.github.io">陈加乐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://jlchentop.github.io/posts/20241124110839-eb76e80b.html">https://jlchentop.github.io/posts/20241124110839-eb76e80b.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://JLChenTop.github.io" target="_blank">JLChenBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></div><div class="post_share"><div class="social-share" data-image="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113407.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/posts/20241108231554-6782be63.html" title="Docker学习"><img class="cover" src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313140810.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Docker学习</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/20231118153859-b3f25ef5.html" title="深度学习经典数据集"><img class="cover" src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113407.png" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-11-24</div><div class="title">深度学习经典数据集</div></div></a></div><div><a href="/posts/20240625161553-3e0c9627.html" title="深度学习原始数据编码方式总结"><img class="cover" src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/2023/11/20231112-174849.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-28</div><div class="title">深度学习原始数据编码方式总结</div></div></a></div><div><a href="/posts/20240619110418-c232d3a1.html" title="读《深度学习推荐系统》——王喆"><img class="cover" src="https://aliyun-photo-bucket.oss-cn-beijing.aliyuncs.com/img/202320230313113407.png" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-31</div><div class="title">读《深度学习推荐系统》——王喆</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84embedding%E8%8C%83%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">深度学习中的embedding范式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AFembedding"><span class="toc-number">1.1.</span> <span class="toc-text">1. 什么是embedding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Embedding-%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.1.</span> <span class="toc-text">Embedding 的原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Embedding-%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text">2. Embedding 的优缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-number">1.2.2.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-embeddings%E5%8F%98%E6%8D%A2%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BB%8F%E5%B8%B8%E4%BD%BF%E7%94%A8%E5%8A%A0%E6%B3%95%E6%93%8D%E4%BD%9C"><span class="toc-number">1.3.</span> <span class="toc-text">3. embeddings变换为什么经常使用加法操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%8A%A0%E6%B3%95%E6%93%8D%E4%BD%9C%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.3.1.</span> <span class="toc-text">使用加法操作的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%88"><span class="toc-number">1.3.2.</span> <span class="toc-text">替代方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">1.3.3.</span> <span class="toc-text">结论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.4.</span> <span class="toc-text">应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.4.1.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By 陈加乐</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a href="https://jlchentop.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>function loadGiscus () {
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  const config = Object.assign({
+    src: 'https://giscus.app/client.js',
+    'data-repo': 'JLChenTop/giscus',
+    'data-repo-id': 'R_kgDOKifXpA',
+    'data-category-id': 'DIC_kwDOKifXpM4CaRTV',
+    'data-mapping': 'pathname',
+    'data-theme': nowTheme,
+    'data-reactions-enabled': '1',
+    crossorigin: 'anonymous',
+    async: true
+  },null)
+
+  let ele = document.createElement('script')
+  for (let key in config) {
+    ele.setAttribute(key, config[key])
+  }
+  document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function changeGiscusTheme () {
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  function sendMessage(message) {
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+  }
+
+  sendMessage({
+    setConfig: {
+      theme: theme
+    }
+  });
+}
+
+if ('Giscus' === 'Giscus' || !false) {
+  if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+  else loadGiscus()
+} else {
+  function loadOtherComment () {
+    loadGiscus()
+  }
+}</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="true" data-text="I,LOVE,YOU" data-fontsize="30px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></body></html>
